@@ -15,13 +15,17 @@ for n, ep in sorted(EPS.items()):
     covered = sorted(i for sc in ep["scenes"] for i in sc["lines"])
     if covered != list(range(len(ep["lines"]))):
         bad += 1; print(f"EP{n}: scenes do not cover lines 0..{len(ep['lines'])-1} exactly once -> {covered}")
+    for i, ln in enumerate(ep["lines"]):
+        nl = B.wrap(ln.get("cap", ln["say"])).count("<br>") + 1
+        if nl > 3: bad += 1; print(f"EP{n} line {i}: caption wraps to {nl} lines (max 3) -> shorten: {ln.get('cap', ln['say'])[:40]}...")
     for k, sc in enumerate(ep["scenes"]):
         if sc["type"] == "cards":
             rows = sc["rows"]; N = len(rows)
             if N > 4: bad += 1; print(f"EP{n} s{k}: {N} rows (max 4)")
             if ENGINE == "v2":
                 gap = 12; h = min(200, (460 - (N - 1) * gap) // N)
-                tf, df, bd = (52, 36, 72) if h >= 170 else ((46, 32, 64) if h >= 125 else (40, 31, 56))
+                two = any("<br>" in r["desc"] for r in rows)
+                tf, df, bd = (52, 36, 72) if h >= 170 else (((44, 30, 64) if two else (46, 32, 64)) if h >= 125 else (40, 31, 56))
                 base = 780 - 44 - 32 - bd - 16
             else:
                 _, h, tf, df, av = B.rows_layout(N, bool(sc.get("header")))
@@ -33,7 +37,7 @@ for n, ep in sorted(EPS.items()):
                 wd = max(tw(x) * df for x in lines)
                 if wt > avail * 0.97: bad += 1; print(f"EP{n} s{k} title too wide: {r['title']} ({wt:.0f}>{avail})")
                 if wd > avail * 0.97: bad += 1; print(f"EP{n} s{k} desc too wide: {r['desc']} ({wd:.0f}>{avail})")
-                if h < 160 and len(lines) > 1: bad += 1; print(f"EP{n} s{k} 4-row card should have a 1-line desc: {r['title']}")
+                if h < 140 and len(lines) > 1: bad += 1; print(f"EP{n} s{k} 4-row card should have a 1-line desc: {r['title']}")
         elif sc["type"] == "exam":
             for x in sc["html"].split("<br>"):
                 w = tw(strip(x)) * (46 if ENGINE == "v2" else 50)

@@ -5,7 +5,8 @@ sys.path.insert(0, os.path.dirname(__file__))
 import build_ep as B
 from build_ep import tw, wrap, ep_dir, EPS, TAIL
 
-PAPER = B.ASSETS + "/paper.jpg"
+PAPER = B.ASSETS + "/" + os.environ.get("PAPER_FILE", "paper.jpg")   # e.g. paper_pink.jpg
+CHARACTER = os.environ.get("CHARACTER", "swing")                      # swing | cat
 BRAND = os.environ.get("BRAND", "사회복지실천론")
 ORANGE = "#dc480e"      # fills
 ORANGE_T = "#c43d08"    # text accent on paper
@@ -108,6 +109,56 @@ def pend(sid, cx, cy, s):
     return svg, hx
 
 
+def cat_markup(sid, cx, by, s):
+    """Glasses cat on a stack of books. Returns (svg, global coords for animation origins)."""
+    g = lambda x, y: (x, y)   # GSAP svgOrigin is read in the (scaled) parent group's LOCAL units
+    parts = f"""
+<g transform="translate({cx} {by}) scale({s})">
+  <rect x="-150" y="-54" width="300" height="54" rx="12" fill="#2a2a2a"></rect><rect x="-150" y="-36" width="300" height="8" fill="#f2561a"></rect>
+  <rect x="-135" y="-104" width="270" height="50" rx="12" fill="#f2561a"></rect><rect x="-135" y="-82" width="270" height="7" fill="#f5f0e3" opacity="0.85"></rect>
+  <rect x="-118" y="-150" width="236" height="46" rx="12" fill="#f5f0e3"></rect><rect x="-118" y="-128" width="236" height="6" fill="#d9cfb8"></rect>
+  <g id="{sid}C">
+    <path id="{sid}T" d="M 60 -175 C 132 -170 172 -215 150 -282" stroke="#ff9a3d" stroke-width="30" fill="none" stroke-linecap="round"></path>
+    <ellipse cx="0" cy="-215" rx="78" ry="72" fill="#ff9a3d"></ellipse>
+    <ellipse cx="0" cy="-205" rx="48" ry="52" fill="#fff3e2"></ellipse>
+    <ellipse cx="-52" cy="-158" rx="30" ry="14" fill="#ff9a3d"></ellipse><ellipse cx="52" cy="-158" rx="30" ry="14" fill="#ff9a3d"></ellipse>
+    <ellipse cx="-22" cy="-157" rx="22" ry="12" fill="#fff3e2"></ellipse><ellipse cx="22" cy="-157" rx="22" ry="12" fill="#fff3e2"></ellipse>
+    <path d="M -66 -352 L -54 -424 L -12 -380 Z" fill="#ff9a3d"></path><path d="M -56 -362 L -49 -402 L -26 -378 Z" fill="#ffb3c1"></path>
+    <path d="M 66 -352 L 54 -424 L 12 -380 Z" fill="#ff9a3d"></path><path d="M 56 -362 L 49 -402 L 26 -378 Z" fill="#ffb3c1"></path>
+    <circle cx="0" cy="-318" r="74" fill="#ff9a3d"></circle>
+    <path d="M -14 -384 v 18 M 0 -388 v 22 M 14 -384 v 18" stroke="#e07a1f" stroke-width="7" stroke-linecap="round" fill="none"></path>
+    <circle cx="-48" cy="-296" r="11" fill="#ff9aa2" opacity="0.6"></circle><circle cx="48" cy="-296" r="11" fill="#ff9aa2" opacity="0.6"></circle>
+    <g id="{sid}E"><ellipse cx="-26" cy="-322" rx="9" ry="12" fill="#2a1a12"></ellipse><ellipse cx="26" cy="-322" rx="9" ry="12" fill="#2a1a12"></ellipse>
+      <circle cx="-23" cy="-326" r="3" fill="#fff"></circle><circle cx="29" cy="-326" r="3" fill="#fff"></circle></g>
+    <circle cx="-26" cy="-322" r="21" fill="none" stroke="#2a2a2a" stroke-width="5"></circle><circle cx="26" cy="-322" r="21" fill="none" stroke="#2a2a2a" stroke-width="5"></circle>
+    <path d="M -5 -322 h 10" stroke="#2a2a2a" stroke-width="5"></path>
+    <path d="M -7 -300 h 14 l -7 9 z" fill="#ff7b95"></path>
+    <path d="M -12 -288 Q -6 -280 0 -290 Q 6 -280 12 -288" stroke="#7a3b2a" stroke-width="4" fill="none" stroke-linecap="round"></path>
+    <path d="M -44 -296 L -104 -306 M -44 -288 L -102 -284 M 44 -296 L 104 -306 M 44 -288 L 102 -284" stroke="#7a3b2a" stroke-width="3" stroke-linecap="round"></path>
+    <g id="{sid}P"><path d="M 62 -245 Q 102 -262 110 -320" stroke="#ff9a3d" stroke-width="30" stroke-linecap="round" fill="none"></path>
+    <circle cx="110" cy="-328" r="17" fill="#fff3e2"></circle></g>
+  </g>
+</g>"""
+    svg = f'<svg id="{sid}p" class="full" viewBox="0 0 1080 1920" width="1080" height="1920"><g id="{sid}W">{parts}</g></svg>'
+    return svg, dict(tail=g(60, -175), paw=g(62, -245), eye=g(0, -322))
+
+
+def cat_js(sid, meta, t0, dur):
+    out = []
+    reps = max(1, math.ceil(dur / 0.9) - 1)
+    out.append(f'tl.fromTo("#{sid}C", {{ y: 0 }}, {{ y: -9, duration: 0.9, ease: "sine.inOut", yoyo: true, repeat: {reps} }}, {t0});')
+    tx, ty = meta["tail"]
+    out.append(f'tl.fromTo("#{sid}T", {{ rotation: -9, svgOrigin: "{tx} {ty}" }}, {{ rotation: 11, svgOrigin: "{tx} {ty}", duration: 0.7, ease: "sine.inOut", yoyo: true, repeat: {max(1, math.ceil(dur / 0.7) - 1)} }}, {t0});')
+    px, py = meta["paw"]
+    out.append(f'tl.fromTo("#{sid}P", {{ rotation: -16, svgOrigin: "{px} {py}" }}, {{ rotation: 12, svgOrigin: "{px} {py}", duration: 0.55, ease: "sine.inOut", yoyo: true, repeat: {max(1, math.ceil(dur / 0.55) - 1)} }}, {t0});')
+    ex, ey = meta["eye"]
+    t = t0 + 1.8
+    while t < t0 + dur - 0.3:
+        out.append(f'tl.to("#{sid}E", {{ scaleY: 0.1, svgOrigin: "{ex} {ey}", duration: 0.07, yoyo: true, repeat: 1 }}, {round(t, 2)});')
+        t += 2.6
+    return out
+
+
 def build(n):
     ep = EPS[n]
     d = ep_dir(n)
@@ -133,11 +184,16 @@ def build(n):
         exit_js = f'tl.to("#{sid} > *", {{ opacity: 0, duration: 0.22 }}, {round(t1 - 0.27, 2)});' if k < len(scenes) - 1 else ""
         hl = f'<div class="hl2{" big" if sc["type"] == "hook" else ""}" id="{sid}h">{esc_ac(sc["headline"])}</div>'
         if sc["type"] == "hook":
-            svg, hx = pend(sid, 540, 900, 1.15)
-            html_scenes.append(head + svg + hl + "</div>")
             js.append(f'tl.from("#{sid}h", {{ scale: 0.86, y: 24, duration: 0.55, ease: "back.out(1.7)" }}, 0);')
-            reps = max(1, math.ceil(dur / 1.7) - 1)
-            js.append(f'tl.fromTo("#{sid}G", {{ rotation: -7, svgOrigin: "{hx} -60" }}, {{ rotation: 7, svgOrigin: "{hx} -60", duration: 1.7, ease: "sine.inOut", yoyo: true, repeat: {reps} }}, 0);')
+            if CHARACTER == "cat":
+                svg, meta = cat_markup(sid, 540, 1015, 0.92)
+                html_scenes.append(head + svg + hl + "</div>")
+                js.extend(cat_js(sid, meta, 0, dur))
+            else:
+                svg, hx = pend(sid, 540, 900, 1.15)
+                html_scenes.append(head + svg + hl + "</div>")
+                reps = max(1, math.ceil(dur / 1.7) - 1)
+                js.append(f'tl.fromTo("#{sid}G", {{ rotation: -7, svgOrigin: "{hx} -60" }}, {{ rotation: 7, svgOrigin: "{hx} -60", duration: 1.7, ease: "sine.inOut", yoyo: true, repeat: {reps} }}, 0);')
             js.append(exit_js)
         elif sc["type"] == "cards":
             rows = sc["rows"]
@@ -145,10 +201,11 @@ def build(n):
             gap = 12
             avail = 460
             h = min(200, (avail - (nrow - 1) * gap) // nrow)
+            two = any("<br>" in r["desc"] for r in rows)
             if h >= 170:
                 tf, df, bd, bf = 52, 36, 72, 30
             elif h >= 125:
-                tf, df, bd, bf = 46, 32, 64, 28
+                tf, df, bd, bf = (44, 30, 64, 28) if two else (46, 32, 64, 28)
             else:
                 tf, df, bd, bf = 40, 31, 56, 28
             ph = nrow * h + (nrow - 1) * gap + 44
@@ -197,14 +254,21 @@ def build(n):
             btns = "".join(f'<div class="btn {"a" if c == 0 else "b"}">{t}</div>' for t, c in sc["buttons"])
             ph = 22 + int(qfs * 1.2) + 20 + 80 + 22
             body = (f'<div class="dpanel" id="{sid}panel" style="height:{ph}px;"><div class="cq" style="font-size:{qfs}px;">{sc["q"]}</div><div class="btns">{btns}</div></div>')
-            svg, hx = pend(sid, 540, 958, 0.64)
+            if CHARACTER == "cat":
+                svg, meta = cat_markup(sid, 540, 1020, 0.58)
+                hx = None
+            else:
+                svg, hx = pend(sid, 540, 958, 0.64)
             html_scenes.append(head + svg + hl + body + "</div>")
             js.append(f'tl.from("#{sid}h", {{ opacity: 0, y: 36, duration: 0.5, ease: "power3.out" }}, {round(t0 + 0.1, 2)});')
             js.append(f'tl.from("#{sid}panel", {{ opacity: 0, y: 70, scale: 0.95, duration: 0.55, ease: "back.out(1.4)" }}, {round(t0 + 0.2, 2)});')
             js.append(f'tl.from("#{sid} .btn", {{ opacity: 0, scale: 0.6, duration: 0.4, ease: "back.out(2)", stagger: 0.25 }}, {round(t0 + 1.4, 2)});')
             js.append(f'tl.from("#{sid}W", {{ y: -520, duration: 0.9, ease: "bounce.out" }}, {round(t0 + 0.6, 2)});')
-            reps = max(1, math.ceil((dur - 1.2) / 1.7) - 1)
-            js.append(f'tl.fromTo("#{sid}G", {{ rotation: -7, svgOrigin: "{hx} -60" }}, {{ rotation: 7, svgOrigin: "{hx} -60", duration: 1.7, ease: "sine.inOut", yoyo: true, repeat: {reps} }}, {round(t0 + 1.2, 2)});')
+            if CHARACTER == "cat":
+                js.extend(cat_js(sid, meta, round(t0 + 1.2, 2), round(dur - 1.2, 2)))
+            else:
+                reps = max(1, math.ceil((dur - 1.2) / 1.7) - 1)
+                js.append(f'tl.fromTo("#{sid}G", {{ rotation: -7, svgOrigin: "{hx} -60" }}, {{ rotation: 7, svgOrigin: "{hx} -60", duration: 1.7, ease: "sine.inOut", yoyo: true, repeat: {reps} }}, {round(t0 + 1.2, 2)});')
 
     caps, capjs = "", []
     for i, ln in enumerate(lines):

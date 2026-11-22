@@ -14,6 +14,8 @@ description: 자격시험(예 사회복지사 1급) 기출문제 PDF를 읽고, 
 | `ENGINE=v1` 카드 테마 | 단색 바탕(크림/하늘 등) + 보라·민트 카드 줄 + 다람쥐 캐릭터 + 하단 네이비 자막 | 조사론(크림), 인간행동(하늘색) |
 | `ENGINE=v2` 종이·주황 모션 | 구겨진 종이 질감 바탕 + 굵은 검정 헤드라인/주황 강조 + 흰 알약 카드 패널 + 다크 목업/도장 + 주황 공에 매달린 캐릭터 | 실천론(세이지 그린 종이) — 사용자가 준 레퍼런스 모션그래픽 스타일 |
 바탕색은 영역마다 바꾼다(피드에서 구분). 자세한 값과 바꾸는 법: `references/style-guide.md`.
+- v2 옵션: `CHARACTER=swing`(주황 공에 매달린 여자아이, 기본) | `CHARACTER=cat`(책 더미에 앉아 손 흔드는 안경 고양이) · `PAPER_FILE=paper_pink.jpg`(종이색: `scripts/paper.py <out.jpg> "R,G,B"`로 영역별 생성).
+- 지금까지: 조사론=v1 크림, 인간행동=v1 하늘색, 실천론=v2 세이지 + swing, **실천기술론=v2 연분홍 + cat**.
 
 ## 사전 조건
 - `ffmpeg`/`ffprobe`, `node`/`npm`, `python3`, (선택) `uv`.
@@ -31,7 +33,8 @@ description: 자격시험(예 사회복지사 1급) 기출문제 PDF를 읽고, 
    export REELS_WORK=$PWD/reels_work REELS_CONTENT=<episodes 파일이 있는 폴더>
    export EPMOD=episodes_<이름> SERIESDIR=series_<이름> ENGINE=v1|v2 BRAND='시리즈 이름'
    # v1이면 바탕색: GROUND='#e3f0ff' BLOB_A='rgba(255,201,60,0.34)' BLOB_B='rgba(108,77,246,0.16)'
-   python3 scripts/lint_content.py            # 글자 넘침 사전 점검
+   # v2 예: PAPER_FILE=paper_pink.jpg CHARACTER=cat  (종이는 $REELS_WORK/assets_src/에 paper.py로 미리 생성)
+   python3 scripts/lint_content.py            # 글자 넘침 + 자막 4줄 이상 사전 점검(필수, 통과할 때까지 문구 수정)
    bash scripts/run_pipeline.sh tts           # 음성 생성 → 길이로 타이밍 계산
    bash scripts/run_pipeline.sh html          # 장면/자막 HTML 생성
    bash scripts/run_pipeline.sh audio         # 해설 + 음악 믹스(해설 중 음악 자동 감소)
@@ -44,7 +47,7 @@ description: 자격시험(예 사회복지사 1급) 기출문제 PDF를 읽고, 
 8. **전달**: `SendUserFile`로 MP4들을 보낸다(여러 파일 한 번에). 아래 "보고 규칙" 따르기.
 
 ## 콘텐츠 규칙 (요약)
-- 한 줄 해설(`say`)은 4~7초. 한 편 총 35~55초. 마지막 줄은 댓글 퀴즈(정답은 고정 댓글로 공개).
+- 한 줄 해설(`say`)은 4~7초, **자막이 3줄을 넘으면 카드를 가리므로 약 45자 이내**(lint가 검사). 한 편 총 35~55초. 마지막 줄은 댓글 퀴즈(정답은 고정 댓글로 공개).
 - 카드 행: 제목 짧게(2줄 금지), 설명은 N=4일 때 한 줄. `mark`로 ○/✕.
 - `exam` 장면은 **틀린 문장을 따옴표 카드로 보여 주고 도장**. 정답 보기는 "정답!" 등 초록 도장.
 - 기출 원문을 그대로 옮기지 말고 **개념으로 풀어 쓰기** + "제N회 기출 응용" 출처 표기.
@@ -59,4 +62,4 @@ description: 자격시험(예 사회복지사 1급) 기출문제 PDF를 읽고, 
 ## 파일
 - `scripts/setup.sh` 작업공간 준비 · `scripts/run_pipeline.sh` 단계 실행 · `scripts/build_ep.py`(v1 엔진, TTS·타이밍·오디오 공용) · `scripts/build_v2.py`(v2 엔진) · `scripts/music.py` · `scripts/paper.py` · `scripts/lint_content.py` · `scripts/summarize_checks.py`
 - `references/schema.md` 콘텐츠 스키마 · `references/style-guide.md` 디자인 값 · `references/lessons.md` 함정·교훈
-- `examples/episodes_josaron.py`(조사론 8편, v1) · `examples/episodes_hbse.py`(인간행동 10편, v1) · `examples/episodes_prac.py`(실천론 10편, v2)
+- `examples/episodes_josaron.py`(조사론 8편, v1) · `examples/episodes_hbse.py`(인간행동 10편, v1) · `examples/episodes_prac.py`(실천론 10편, v2) · `examples/episodes_tech.py`(실천기술론 9편, v2 + 분홍 종이 + 고양이)
