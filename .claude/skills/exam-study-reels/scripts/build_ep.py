@@ -21,6 +21,21 @@ LEAD = 0.3
 TAIL = float(os.environ.get("TAIL", "2.0"))   # v2 answer-reveal series use TAIL=2.8
 
 
+# 캐릭터별 목소리 느낌 (같은 여성 음성에서 속도·음높이만 조절). VOICE_RATE / VOICE_PITCH 환경변수로 직접 덮어쓸 수 있음.
+VOICES = {
+    "owl": ("-6%", "-6Hz"),      # 차분한 박사님
+    "beaver": ("+8%", "-2Hz"),   # 씩씩한 팀장
+    "penguin": ("-4%", "-8Hz"),  # 또렷하고 단호한 판사
+    "rabbit": ("+7%", "+5Hz"),   # 통통 튀는 말투
+    "bear": ("-9%", "-3Hz"),     # 포근하고 느긋
+    "turtle": ("-12%", "-5Hz"),  # 아주 느긋한 박사
+    "cat": ("+0%", "-3Hz"), "dog": ("+0%", "-3Hz"),   # 기존 시리즈와 동일하게 유지
+}
+_RATE, _PITCH = VOICES.get(os.environ.get("CHARACTER", ""), ("+0%", "-3Hz"))
+VOICE_RATE = os.environ.get("VOICE_RATE", _RATE)
+VOICE_PITCH = os.environ.get("VOICE_PITCH", _PITCH)
+
+
 def ep_dir(n):
     return f"{SERIES}/ep{n}"
 
@@ -82,7 +97,7 @@ async def tts_all(ns):
         async with sem:
             for attempt in range(3):
                 try:
-                    await edge_tts.Communicate(say, "ko-KR-SunHiNeural", rate="+0%", pitch="-3Hz", proxy=proxy).save(f"{d}/l{i}.mp3")
+                    await edge_tts.Communicate(say, "ko-KR-SunHiNeural", rate=VOICE_RATE, pitch=VOICE_PITCH, proxy=proxy).save(f"{d}/l{i}.mp3")
                     return
                 except Exception as e:  # retry
                     await asyncio.sleep(1.5)
