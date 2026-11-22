@@ -1,0 +1,2 @@
+# 사용: REELS_WORK=<작업폴더> source examples/env/env_<시리즈>.sh  (EPMOD/SERIESDIR/CHARACTER/색 프리셋 포함)
+export REELS_WORK=${REELS_WORK:-$PWD/reels_work} REELS_CONTENT=${REELS_CONTENT:-$PWD/examples} EPMOD=episodes_josaron_v2 SERIESDIR=series_josa2 ENGINE=v2 BRAND='사회복지조사론' CHARACTER=turtle PROGRESS=1 TAIL=2.8 ACCENT='#0f8a8a' ACCENT_T='#0b7676' ACCENT_L='#7fe0d6' ACCENT_RGB='15,138,138' PAPER_FILE=paper_sand.jpg

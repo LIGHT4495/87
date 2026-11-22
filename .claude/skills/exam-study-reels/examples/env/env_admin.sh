@@ -1,0 +1,2 @@
+# 사용: REELS_WORK=<작업폴더> source examples/env/env_<시리즈>.sh  (EPMOD/SERIESDIR/CHARACTER/색 프리셋 포함)
+export REELS_WORK=${REELS_WORK:-$PWD/reels_work} REELS_CONTENT=${REELS_CONTENT:-$PWD/examples} EPMOD=episodes_admin SERIESDIR=series_admin ENGINE=v2 BRAND='사회복지행정론' CHARACTER=beaver STYLE=check PROGRESS=1 TAIL=2.8 ACCENT='#e0523f' ACCENT_T='#d94a38' ACCENT_L='#ff9c8c' ACCENT_RGB='224,82,63' PAPER_FILE=paper_aqua.jpg

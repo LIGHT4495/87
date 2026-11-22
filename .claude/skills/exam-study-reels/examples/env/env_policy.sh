@@ -1,0 +1,2 @@
+# 사용: REELS_WORK=<작업폴더> source examples/env/env_<시리즈>.sh  (EPMOD/SERIESDIR/CHARACTER/색 프리셋 포함)
+export REELS_WORK=${REELS_WORK:-$PWD/reels_work} REELS_CONTENT=${REELS_CONTENT:-$PWD/examples} EPMOD=episodes_policy SERIESDIR=series_policy ENGINE=v2 BRAND='사회복지정책론' CHARACTER=owl STYLE=route PROGRESS=1 TAIL=2.8 ACCENT='#1f3a68' ACCENT_T='#1f3a68' ACCENT_L='#9db8ee' ACCENT_RGB='31,58,104' PAPER_FILE=paper_yellow.jpg

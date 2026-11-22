@@ -6,20 +6,27 @@ description: 자격시험(예 사회복지사 1급) 기출문제 PDF를 읽고, 
 # 수험 기출 → 릴스 시리즈 제작 (exam-study-reels)
 
 기출문제 PDF 한 권을 **개념 쌍(헷갈리는 것끼리) 단위의 30~55초 릴스 여러 편**으로 바꾼다.
-한 편의 구성: **후킹 → 개념 카드 → 기출 응용 "틀림!" 도장 → 댓글 퀴즈**. 음성은 edge-tts(ko-KR-SunHiNeural), 음악은 직접 합성, 렌더링은 HyperFrames(HTML→MP4).
+한 편의 구성: **후킹 → 개념 카드(비교) → 기출 응용 "틀림!" 도장 → 댓글 퀴즈 → 3·2·1 정답 공개**. 음성은 edge-tts(ko-KR-SunHiNeural), 음악은 직접 합성, 렌더링은 HyperFrames(HTML→MP4).
 
-## 두 가지 스타일 엔진
-| 엔진 | 모양 | 쓰임 |
-|---|---|---|
-| `ENGINE=v1` 카드 테마 | 단색 바탕(크림/하늘 등) + 보라·민트 카드 줄 + 다람쥐 캐릭터 + 하단 네이비 자막 | 조사론(크림), 인간행동(하늘색) |
-| `ENGINE=v2` 종이·주황 모션 | 구겨진 종이 질감 바탕 + 굵은 검정 헤드라인/주황 강조 + 흰 알약 카드 패널 + 다크 목업/도장 + 주황 공에 매달린 캐릭터 | 실천론(세이지 그린 종이) — 사용자가 준 레퍼런스 모션그래픽 스타일 |
-바탕색은 영역마다 바꾼다(피드에서 구분). 자세한 값과 바꾸는 법: `references/style-guide.md`.
-- v2 옵션: `CHARACTER=swing`(주황 공에 매달린 여자아이, 기본) | `CHARACTER=cat`(책 더미에 앉아 손 흔드는 안경 고양이) | `CHARACTER=dog`(주황 스툴에 앉아 손 흔드는 강아지 — 꼬리·귀·손·눈 모션) · `PAPER_FILE=paper_pink.jpg`(종이색: `scripts/paper.py <out.jpg> "R,G,B"`로 영역별 생성).
-- v2 확장(3교시 시리즈에서 추가): `CHARACTER=owl|beaver|penguin|rabbit|bear|turtle`(올빼미 박사·비버 팀장·펭귄 판사·토끼·곰·거북이), `STYLE=route|check|law`(노선도 / 결재 체크리스트+빨간펜 / 조문 § 카드), `ACCENT`·`ACCENT_T`·`ACCENT_L`·`ACCENT_RGB`(포인트 컬러), `PROGRESS=1`(HUD에 EP n/총편수 + 진행 막대), `TAIL=2.8`(정답 공개용 꼬리).
-  - 정답 공개: 마지막 줄에 `pause=2.3`을 주고 cta에 `reveal=dict(line=정답줄, answer=정답버튼번호)` → 3·2·1 카운트다운 후 정답 버튼이 초록으로 강조.
-  - `versus` 장면: 좌우 비교 카드(`left`/`right`=dict(line,title,items 2~4개)) + VS 배지.
-  - 시리즈 프리셋은 `examples/presets.md` 참고.
-- 지금까지: 조사론=v1 크림, 인간행동=v1 하늘색, 실천론=v2 세이지 + swing, 실천기술론=v2 연분홍 + cat, 지역사회복지론=v2 연보라 + dog, **정책론=버터옐로+네이비+올빼미+노선도, 행정론=아쿠아민트+코랄+비버+체크리스트, 법제론=연살구+딥그린+펭귄+조문카드**.
+## 스타일 엔진 (v2 권장)
+`ENGINE=v2` 종이 질감 모션 — 굵은 헤드라인 + 포인트 컬러 + 흰 알약 카드 패널 + 다크 목업/도장 + 캐릭터 + 자막 알약. (`ENGINE=v1` 카드 테마는 초기 조사론/인간행동용이며, `examples/v1_to_v2.py`로 v2로 변환할 수 있다.)
+
+**8과목 최종 구성** (피드에서 과목이 구별되도록 캐릭터·배경색·포인트 컬러를 모두 다르게)
+| 과목 | 캐릭터 | 종이 | 포인트 | 스타일 | 프리셋 |
+|---|---|---|---|---|---|
+| 조사론 | turtle 거북이 박사 | sand 라떼 크림 | 청록 | 기본 | `examples/env/env_josa.sh` |
+| 인간행동 | rabbit 토끼 | sky 하늘색 | 로즈 | 기본 | `env_hbse2.sh` |
+| 실천론 | bear 곰 | sage 세이지 | 브라운 | 기본 | `env_prac2.sh` |
+| 실천기술론 | cat 고양이 | pink 연분홍 | 주황 | 기본 | (episodes_tech.py) |
+| 지역사회복지론 | dog 강아지 | lavender 연보라 | 주황 | 기본 | `env_comm.sh` |
+| 정책론 | owl 올빼미 | yellow 버터옐로 | 네이비 | `STYLE=route` 노선도 | `env_policy.sh` |
+| 행정론 | beaver 비버 | aqua 아쿠아민트 | 코랄 | `STYLE=check` 결재 체크리스트+빨간펜 | `env_admin.sh` |
+| 법제론 | penguin 펭귄 판사 | peach 연살구 | 딥그린 | `STYLE=law` 조문 § 카드+판결 도장 | `env_law.sh` |
++ `env_glance.sh`: "8과목 한눈에 보기" 소개 영상(`cast`/`subject` 장면).
+
+**환경변수(v2)**: `CHARACTER`(swing|cat|dog|owl|beaver|penguin|rabbit|bear|turtle) · `STYLE`(route|check|law) · `ACCENT`/`ACCENT_T`/`ACCENT_L`/`ACCENT_RGB` · `PAPER_FILE`(`scripts/paper.py out.jpg "R,G,B"`) · `PROGRESS=1`(EP n/총편수+진행 막대) · `TAIL=2.8`(정답 공개 꼬리) · `VOICE_RATE`/`VOICE_PITCH`(캐릭터별 말투 기본값 자동, `references/style-guide.md`).
+**장면 타입(v2)**: `hook` `cards` `versus`(좌우 비교+VS) `exam`(틀림!/정답! 도장) `cta`(퀴즈, `reveal`로 3·2·1 카운트다운+정답 강조) `cast`(여러 캐릭터 한 화면) `subject`(과목 소개). 줄에 `pause=2.3`을 주면 앞에 침묵(카운트다운 구간). 자세한 스키마: `references/schema.md`.
+종이색 예(R,G,B): sand 250,238,214 · sky 205,228,250 · yellow 252,240,188 · aqua 198,236,232 · peach 255,222,204 (pink/lavender/sage는 `setup.sh` 또는 paper.py로 생성).
 
 ## 사전 조건
 - `ffmpeg`/`ffprobe`, `node`/`npm`, `python3`, (선택) `uv`.
@@ -46,9 +53,9 @@ description: 자격시험(예 사회복지사 1급) 기출문제 PDF를 읽고, 
    bash scripts/run_pipeline.sh snapshot 1 4  # 대표 편 contact sheet → Read로 눈으로 확인
    bash scripts/run_pipeline.sh render        # 3편씩 병렬 렌더(편당 2~4분)
    ```
-   `all`은 tts→html→audio→check까지. 렌더는 오래 걸리니 `run_in_background`로 돌리고 완료 알림을 기다린다.
+   끊긴 렌더링 이어서: `bash scripts/render_missing.sh` (없는 mp4만). `all`은 tts→html→audio→check까지. 렌더는 오래 걸리니 `run_in_background`로 돌리고 완료 알림을 기다린다.
 7. **눈으로 검수**: snapshot의 contact sheet를 최소 2~3편 열어 본다(줄바꿈 이상, 겹침, 도장 위치). 문제는 템플릿/콘텐츠를 고쳐 html→check 반복.
-8. **전달**: `SendUserFile`로 MP4들을 보낸다(여러 파일 한 번에). 아래 "보고 규칙" 따르기.
+8. **전달**: 완성되는 대로 `SendUserFile`(한 편씩 또는 묶음). 영역/교시별 정리·압축은 `scripts/package_by_area.py`(AREAS 편집). 캡션·해시태그·고정 댓글 파일도 함께. 한 장 요약: `references/quickstart.md`. 아래 "보고 규칙" 따르기.
 
 ## 콘텐츠 규칙 (요약)
 - 한 줄 해설(`say`)은 4~7초, **자막이 3줄을 넘으면 카드를 가리므로 약 45자 이내**(lint가 검사). 한 편 총 35~55초. 마지막 줄은 댓글 퀴즈(정답은 고정 댓글로 공개).
@@ -64,6 +71,6 @@ description: 자격시험(예 사회복지사 1급) 기출문제 PDF를 읽고, 
 - 다음 제안: 인스타 캡션/해시태그/고정 댓글, 다른 영역 확장, 바탕색 변경.
 
 ## 파일
-- `scripts/setup.sh` 작업공간 준비 · `scripts/run_pipeline.sh` 단계 실행 · `scripts/build_ep.py`(v1 엔진, TTS·타이밍·오디오 공용) · `scripts/build_v2.py`(v2 엔진) · `scripts/music.py` · `scripts/paper.py` · `scripts/lint_content.py` · `scripts/summarize_checks.py`
+- `scripts/render_missing.sh`(없는 mp4만 렌더) · `scripts/package_by_area.py`(폴더 정리+zip) · `scripts/setup.sh` 작업공간 준비 · `scripts/run_pipeline.sh` 단계 실행 · `scripts/build_ep.py`(v1 엔진, TTS·타이밍·오디오 공용) · `scripts/build_v2.py`(v2 엔진) · `scripts/music.py` · `scripts/paper.py` · `scripts/lint_content.py` · `scripts/summarize_checks.py`
 - `references/schema.md` 콘텐츠 스키마 · `references/style-guide.md` 디자인 값 · `references/lessons.md` 함정·교훈
-- `examples/episodes_josaron.py`(조사론 8편, v1) · `examples/episodes_hbse.py`(인간행동 10편, v1) · `examples/episodes_prac.py`(실천론 10편, v2) · `examples/episodes_tech.py`(실천기술론 9편, v2 + 분홍 종이 + 고양이) · `examples/episodes_community.py`(지역사회복지론 9편, v2 + 연보라 종이 + 강아지) · `episodes_policy.py`(정책론 9편) · `episodes_admin.py`(행정론 7편) · `episodes_law.py`(법제론 8편)
+- `examples/episodes_josaron.py`(조사론 8편, v1) · `examples/episodes_hbse.py`(인간행동 10편, v1) · `examples/episodes_prac.py`(실천론 10편, v2) · `examples/episodes_tech.py`(실천기술론 9편, v2 + 분홍 종이 + 고양이) · `examples/episodes_community.py`(지역사회복지론 9편, v2 + 연보라 종이 + 강아지) · `episodes_policy.py`(정책론 9편) · `episodes_admin.py`(행정론 7편) · `episodes_law.py`(법제론 8편) · `episodes_josaron_v2.py`/`episodes_hbse_v2.py`/`episodes_prac_v2.py`(v2 재제작) · `episodes_glance.py`(8과목 소개) · `v1_to_v2.py` · `env/`(시리즈 프리셋) · `presets.md`
