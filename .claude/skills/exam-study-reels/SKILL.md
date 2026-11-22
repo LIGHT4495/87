@@ -14,8 +14,8 @@ description: 자격시험(예 사회복지사 1급) 기출문제 PDF를 읽고, 
 | `ENGINE=v1` 카드 테마 | 단색 바탕(크림/하늘 등) + 보라·민트 카드 줄 + 다람쥐 캐릭터 + 하단 네이비 자막 | 조사론(크림), 인간행동(하늘색) |
 | `ENGINE=v2` 종이·주황 모션 | 구겨진 종이 질감 바탕 + 굵은 검정 헤드라인/주황 강조 + 흰 알약 카드 패널 + 다크 목업/도장 + 주황 공에 매달린 캐릭터 | 실천론(세이지 그린 종이) — 사용자가 준 레퍼런스 모션그래픽 스타일 |
 바탕색은 영역마다 바꾼다(피드에서 구분). 자세한 값과 바꾸는 법: `references/style-guide.md`.
-- v2 옵션: `CHARACTER=swing`(주황 공에 매달린 여자아이, 기본) | `CHARACTER=cat`(책 더미에 앉아 손 흔드는 안경 고양이) · `PAPER_FILE=paper_pink.jpg`(종이색: `scripts/paper.py <out.jpg> "R,G,B"`로 영역별 생성).
-- 지금까지: 조사론=v1 크림, 인간행동=v1 하늘색, 실천론=v2 세이지 + swing, **실천기술론=v2 연분홍 + cat**.
+- v2 옵션: `CHARACTER=swing`(주황 공에 매달린 여자아이, 기본) | `CHARACTER=cat`(책 더미에 앉아 손 흔드는 안경 고양이) | `CHARACTER=dog`(주황 스툴에 앉아 손 흔드는 강아지 — 꼬리·귀·손·눈 모션) · `PAPER_FILE=paper_pink.jpg`(종이색: `scripts/paper.py <out.jpg> "R,G,B"`로 영역별 생성).
+- 지금까지: 조사론=v1 크림, 인간행동=v1 하늘색, 실천론=v2 세이지 + swing, 실천기술론=v2 연분홍 + cat, **지역사회복지론=v2 연보라 + dog**.
 
 ## 사전 조건
 - `ffmpeg`/`ffprobe`, `node`/`npm`, `python3`, (선택) `uv`.
@@ -62,4 +62,4 @@ description: 자격시험(예 사회복지사 1급) 기출문제 PDF를 읽고, 
 ## 파일
 - `scripts/setup.sh` 작업공간 준비 · `scripts/run_pipeline.sh` 단계 실행 · `scripts/build_ep.py`(v1 엔진, TTS·타이밍·오디오 공용) · `scripts/build_v2.py`(v2 엔진) · `scripts/music.py` · `scripts/paper.py` · `scripts/lint_content.py` · `scripts/summarize_checks.py`
 - `references/schema.md` 콘텐츠 스키마 · `references/style-guide.md` 디자인 값 · `references/lessons.md` 함정·교훈
-- `examples/episodes_josaron.py`(조사론 8편, v1) · `examples/episodes_hbse.py`(인간행동 10편, v1) · `examples/episodes_prac.py`(실천론 10편, v2) · `examples/episodes_tech.py`(실천기술론 9편, v2 + 분홍 종이 + 고양이)
+- `examples/episodes_josaron.py`(조사론 8편, v1) · `examples/episodes_hbse.py`(인간행동 10편, v1) · `examples/episodes_prac.py`(실천론 10편, v2) · `examples/episodes_tech.py`(실천기술론 9편, v2 + 분홍 종이 + 고양이) · `examples/episodes_community.py`(지역사회복지론 9편, v2 + 연보라 종이 + 강아지)

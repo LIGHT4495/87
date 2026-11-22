@@ -6,7 +6,7 @@ import build_ep as B
 from build_ep import tw, wrap, ep_dir, EPS, TAIL
 
 PAPER = B.ASSETS + "/" + os.environ.get("PAPER_FILE", "paper.jpg")   # e.g. paper_pink.jpg
-CHARACTER = os.environ.get("CHARACTER", "swing")                      # swing | cat
+CHARACTER = os.environ.get("CHARACTER", "swing")                      # swing | cat | dog
 BRAND = os.environ.get("BRAND", "사회복지실천론")
 ORANGE = "#dc480e"      # fills
 ORANGE_T = "#c43d08"    # text accent on paper
@@ -159,6 +159,60 @@ def cat_js(sid, meta, t0, dur):
     return out
 
 
+def dog_markup(sid, cx, by, s):
+    """Puppy with an orange scarf on a round stool. Origins for GSAP are LOCAL coordinates."""
+    parts = f"""
+<g transform="translate({cx} {by}) scale({s})">
+  <rect x="-140" y="-34" width="280" height="34" rx="10" fill="#dc480e"></rect>
+  <ellipse cx="0" cy="-34" rx="140" ry="24" fill="#ff7d3d"></ellipse>
+  <g id="{sid}C">
+    <path id="{sid}T" d="M 66 -86 C 130 -84 160 -130 138 -188" stroke="#e9b36a" stroke-width="30" fill="none" stroke-linecap="round"></path>
+    <ellipse cx="0" cy="-122" rx="80" ry="90" fill="#f0c27b"></ellipse>
+    <ellipse cx="0" cy="-104" rx="48" ry="62" fill="#fff3e0"></ellipse>
+    <ellipse cx="-30" cy="-56" rx="24" ry="30" fill="#f0c27b"></ellipse><ellipse cx="30" cy="-56" rx="24" ry="30" fill="#f0c27b"></ellipse>
+    <ellipse cx="-30" cy="-44" rx="27" ry="14" fill="#fff3e0"></ellipse><ellipse cx="30" cy="-44" rx="27" ry="14" fill="#fff3e0"></ellipse>
+    <g id="{sid}EL"><ellipse cx="-76" cy="-262" rx="34" ry="64" fill="#c9863f" transform="rotate(14 -76 -262)"></ellipse></g>
+    <g id="{sid}ER"><ellipse cx="76" cy="-262" rx="34" ry="64" fill="#c9863f" transform="rotate(-14 76 -262)"></ellipse></g>
+    <circle cx="0" cy="-256" r="84" fill="#f0c27b"></circle>
+    <ellipse cx="0" cy="-232" rx="48" ry="38" fill="#fff3e0"></ellipse>
+    <circle cx="-34" cy="-292" r="13" fill="#e9b36a"></circle><circle cx="34" cy="-292" r="13" fill="#e9b36a"></circle>
+    <g id="{sid}E"><ellipse cx="-30" cy="-268" rx="10" ry="13" fill="#2a1a12"></ellipse><ellipse cx="30" cy="-268" rx="10" ry="13" fill="#2a1a12"></ellipse>
+      <circle cx="-27" cy="-272" r="3.5" fill="#fff"></circle><circle cx="33" cy="-272" r="3.5" fill="#fff"></circle></g>
+    <circle cx="-54" cy="-240" r="11" fill="#ff9aa2" opacity="0.55"></circle><circle cx="54" cy="-240" r="11" fill="#ff9aa2" opacity="0.55"></circle>
+    <ellipse cx="0" cy="-244" rx="16" ry="11" fill="#3a2a22"></ellipse>
+    <path d="M 0 -233 v 10 M -16 -218 Q 0 -202 16 -218" stroke="#3a2a22" stroke-width="4" fill="none" stroke-linecap="round"></path>
+    <ellipse cx="0" cy="-200" rx="11" ry="15" fill="#ff7b95"></ellipse>
+    <path d="M -64 -180 Q 0 -152 64 -180 L 58 -158 Q 0 -134 -58 -158 Z" fill="#f2561a"></path>
+    <path d="M 10 -154 L 36 -118 L 14 -112 Z" fill="#dc480e"></path>
+    <g id="{sid}P"><path d="M 52 -150 Q 90 -168 96 -222" stroke="#f0c27b" stroke-width="30" stroke-linecap="round" fill="none"></path>
+    <circle cx="98" cy="-230" r="18" fill="#fff3e0"></circle></g>
+  </g>
+</g>"""
+    svg = f'<svg id="{sid}p" class="full" viewBox="0 0 1080 1920" width="1080" height="1920"><g id="{sid}W">{parts}</g></svg>'
+    return svg, dict(tail=(66, -86), paw=(52, -150), eye=(0, -268), el=(-58, -312), er=(58, -312))
+
+
+def dog_js(sid, meta, t0, dur):
+    out = []
+    out.append(f'tl.fromTo("#{sid}C", {{ y: 0 }}, {{ y: -8, duration: 0.8, ease: "sine.inOut", yoyo: true, repeat: {max(1, math.ceil(dur / 0.8) - 1)} }}, {t0});')
+    tx, ty = meta["tail"]
+    out.append(f'tl.fromTo("#{sid}T", {{ rotation: -14, svgOrigin: "{tx} {ty}" }}, {{ rotation: 18, svgOrigin: "{tx} {ty}", duration: 0.32, ease: "sine.inOut", yoyo: true, repeat: {max(1, math.ceil(dur / 0.32) - 1)} }}, {t0});')
+    for k, sign in (("el", 1), ("er", -1)):
+        ox, oy = meta[k]
+        out.append(f'tl.fromTo("#{sid}{k.upper()}", {{ rotation: {-5 * sign}, svgOrigin: "{ox} {oy}" }}, {{ rotation: {5 * sign}, svgOrigin: "{ox} {oy}", duration: 0.9, ease: "sine.inOut", yoyo: true, repeat: {max(1, math.ceil(dur / 0.9) - 1)} }}, {t0});')
+    px, py = meta["paw"]
+    out.append(f'tl.fromTo("#{sid}P", {{ rotation: -14, svgOrigin: "{px} {py}" }}, {{ rotation: 12, svgOrigin: "{px} {py}", duration: 0.5, ease: "sine.inOut", yoyo: true, repeat: {max(1, math.ceil(dur / 0.5) - 1)} }}, {t0});')
+    ex, ey = meta["eye"]
+    t = t0 + 1.6
+    while t < t0 + dur - 0.3:
+        out.append(f'tl.to("#{sid}E", {{ scaleY: 0.1, svgOrigin: "{ex} {ey}", duration: 0.07, yoyo: true, repeat: 1 }}, {round(t, 2)});')
+        t += 2.4
+    return out
+
+
+MASCOTS = {"cat": (cat_markup, cat_js, (1015, 0.92), (1020, 0.58)), "dog": (dog_markup, dog_js, (1015, 1.0), (1020, 0.62))}
+
+
 def build(n):
     ep = EPS[n]
     d = ep_dir(n)
@@ -185,10 +239,11 @@ def build(n):
         hl = f'<div class="hl2{" big" if sc["type"] == "hook" else ""}" id="{sid}h">{esc_ac(sc["headline"])}</div>'
         if sc["type"] == "hook":
             js.append(f'tl.from("#{sid}h", {{ scale: 0.86, y: 24, duration: 0.55, ease: "back.out(1.7)" }}, 0);')
-            if CHARACTER == "cat":
-                svg, meta = cat_markup(sid, 540, 1015, 0.92)
+            if CHARACTER in MASCOTS:
+                mk, mjs, (mby, ms), _ = MASCOTS[CHARACTER]
+                svg, meta = mk(sid, 540, mby, ms)
                 html_scenes.append(head + svg + hl + "</div>")
-                js.extend(cat_js(sid, meta, 0, dur))
+                js.extend(mjs(sid, meta, 0, dur))
             else:
                 svg, hx = pend(sid, 540, 900, 1.15)
                 html_scenes.append(head + svg + hl + "</div>")
@@ -254,8 +309,9 @@ def build(n):
             btns = "".join(f'<div class="btn {"a" if c == 0 else "b"}">{t}</div>' for t, c in sc["buttons"])
             ph = 22 + int(qfs * 1.2) + 20 + 80 + 22
             body = (f'<div class="dpanel" id="{sid}panel" style="height:{ph}px;"><div class="cq" style="font-size:{qfs}px;">{sc["q"]}</div><div class="btns">{btns}</div></div>')
-            if CHARACTER == "cat":
-                svg, meta = cat_markup(sid, 540, 1020, 0.58)
+            if CHARACTER in MASCOTS:
+                mk, mjs, _, (mby, ms) = MASCOTS[CHARACTER]
+                svg, meta = mk(sid, 540, mby, ms)
                 hx = None
             else:
                 svg, hx = pend(sid, 540, 958, 0.64)
@@ -264,8 +320,8 @@ def build(n):
             js.append(f'tl.from("#{sid}panel", {{ opacity: 0, y: 70, scale: 0.95, duration: 0.55, ease: "back.out(1.4)" }}, {round(t0 + 0.2, 2)});')
             js.append(f'tl.from("#{sid} .btn", {{ opacity: 0, scale: 0.6, duration: 0.4, ease: "back.out(2)", stagger: 0.25 }}, {round(t0 + 1.4, 2)});')
             js.append(f'tl.from("#{sid}W", {{ y: -520, duration: 0.9, ease: "bounce.out" }}, {round(t0 + 0.6, 2)});')
-            if CHARACTER == "cat":
-                js.extend(cat_js(sid, meta, round(t0 + 1.2, 2), round(dur - 1.2, 2)))
+            if CHARACTER in MASCOTS:
+                js.extend(mjs(sid, meta, round(t0 + 1.2, 2), round(dur - 1.2, 2)))
             else:
                 reps = max(1, math.ceil((dur - 1.2) / 1.7) - 1)
                 js.append(f'tl.fromTo("#{sid}G", {{ rotation: -7, svgOrigin: "{hx} -60" }}, {{ rotation: 7, svgOrigin: "{hx} -60", duration: 1.7, ease: "sine.inOut", yoyo: true, repeat: {reps} }}, {round(t0 + 1.2, 2)});')
