@@ -56,3 +56,6 @@ EPS[1] = dict(
 - `cta.reveal`: dict(`line`=정답을 말하는 줄, `answer`=정답 버튼 인덱스) — 3-2-1 카운트다운 뒤 정답 강조.
 - `exam`을 여러 줄에 걸치려면 `lines=[앞줄, ..., stamp_line]`.
 - 환경변수: CHARACTER(owl|beaver|penguin 추가), STYLE(route|check|law), ACCENT*, PROGRESS, TAIL — SKILL.md 참고.
+
+## 캡션 자동 생성용 선택 필드 (에피소드 수준)
+- `caption`: 캡션 첫 줄(기본: hook 헤드라인) · `answer`: 고정 댓글 문구(기본: cta.reveal 정답 줄). `scripts/make_captions.py`가 사용.

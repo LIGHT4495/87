@@ -55,7 +55,8 @@ description: 자격시험(예 사회복지사 1급) 기출문제 PDF를 읽고, 
    ```
    끊긴 렌더링 이어서: `bash scripts/render_missing.sh` (없는 mp4만). `all`은 tts→html→audio→check까지. 렌더는 오래 걸리니 `run_in_background`로 돌리고 완료 알림을 기다린다.
 7. **눈으로 검수**: snapshot의 contact sheet를 최소 2~3편 열어 본다(줄바꿈 이상, 겹침, 도장 위치). 문제는 템플릿/콘텐츠를 고쳐 html→check 반복.
-8. **전달**: 완성되는 대로 `SendUserFile`(한 편씩 또는 묶음). 영역/교시별 정리·압축은 `scripts/package_by_area.py`(AREAS 편집). 캡션·해시태그·고정 댓글 파일도 함께. 한 장 요약: `references/quickstart.md`. 아래 "보고 규칙" 따르기.
+8. **캡션·해시태그·고정 댓글 자동 생성**: `REELS_CONTENT=<examples> EPMOD=episodes_<이름> python3 scripts/make_captions.py "과목명" "#과목태그" 출력.md` — 편마다 캡션(첫 줄=후킹 제목)·공통+과목 해시태그·고정 댓글(정답 줄)을 만든다. 정답이 모호한 편은 "정답 확인 필요"로 표시되니 확인해 고친다. 에피소드에 `caption="…"`/`answer="…"`를 적으면 우선 사용. `EXAM_TAG`/`HASHTAGS` 환경변수로 태그 추가.
+9. **전달**: 완성되는 대로 `SendUserFile`(한 편씩 또는 묶음). 영역/교시별 정리·압축은 `scripts/package_by_area.py`(AREAS 편집). 캡션·해시태그·고정 댓글 파일도 함께. 한 장 요약: `references/quickstart.md`. 아래 "보고 규칙" 따르기.
 
 ## 콘텐츠 규칙 (요약)
 - 한 줄 해설(`say`)은 4~7초, **자막이 3줄을 넘으면 카드를 가리므로 약 45자 이내**(lint가 검사). 한 편 총 35~55초. 마지막 줄은 댓글 퀴즈(정답은 고정 댓글로 공개).
@@ -71,6 +72,6 @@ description: 자격시험(예 사회복지사 1급) 기출문제 PDF를 읽고, 
 - 다음 제안: 인스타 캡션/해시태그/고정 댓글, 다른 영역 확장, 바탕색 변경.
 
 ## 파일
-- `scripts/render_missing.sh`(없는 mp4만 렌더) · `scripts/package_by_area.py`(폴더 정리+zip) · `scripts/setup.sh` 작업공간 준비 · `scripts/run_pipeline.sh` 단계 실행 · `scripts/build_ep.py`(v1 엔진, TTS·타이밍·오디오 공용) · `scripts/build_v2.py`(v2 엔진) · `scripts/music.py` · `scripts/paper.py` · `scripts/lint_content.py` · `scripts/summarize_checks.py`
+- `scripts/make_captions.py`(캡션·해시태그·고정 댓글 초안) · `scripts/render_missing.sh`(없는 mp4만 렌더) · `scripts/package_by_area.py`(폴더 정리+zip) · `scripts/setup.sh` 작업공간 준비 · `scripts/run_pipeline.sh` 단계 실행 · `scripts/build_ep.py`(v1 엔진, TTS·타이밍·오디오 공용) · `scripts/build_v2.py`(v2 엔진) · `scripts/music.py` · `scripts/paper.py` · `scripts/lint_content.py` · `scripts/summarize_checks.py`
 - `references/schema.md` 콘텐츠 스키마 · `references/style-guide.md` 디자인 값 · `references/lessons.md` 함정·교훈
 - `examples/episodes_josaron.py`(조사론 8편, v1) · `examples/episodes_hbse.py`(인간행동 10편, v1) · `examples/episodes_prac.py`(실천론 10편, v2) · `examples/episodes_tech.py`(실천기술론 9편, v2 + 분홍 종이 + 고양이) · `examples/episodes_community.py`(지역사회복지론 9편, v2 + 연보라 종이 + 강아지) · `episodes_policy.py`(정책론 9편) · `episodes_admin.py`(행정론 7편) · `episodes_law.py`(법제론 8편) · `episodes_josaron_v2.py`/`episodes_hbse_v2.py`/`episodes_prac_v2.py`(v2 재제작) · `episodes_glance.py`(8과목 소개) · `v1_to_v2.py` · `env/`(시리즈 프리셋) · `presets.md`
