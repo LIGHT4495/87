@@ -564,6 +564,44 @@ def build(n):
             fr = max(1, math.ceil((dur - 1.0) / 1.6) - 1)
             js.append(f'tl.to("#{sid}panel", {{ y: -6, duration: 1.6, ease: "sine.inOut", yoyo: true, repeat: {fr} }}, {round(t0 + 0.9, 2)});')
             js.append(exit_js)
+        elif sc["type"] == "cast":      # 여러 캐릭터를 한 화면에 (시리즈 소개용)
+            os.makedirs(d + "/assets", exist_ok=True)
+            shutil.copy(B.ASSETS + "/" + sc.get("paper", "paper.jpg"), d + "/assets/" + sc.get("paper", "paper.jpg"))
+            items = sc["items"]
+            cols = 4
+            svgs, anim = "", []
+            saved = globals()["ACCENT"]
+            for j, it in enumerate(items):
+                cid = f"{sid}m{j}"
+                cx = 210 + (j % cols) * 220
+                by = 790 + (j // cols) * 250
+                globals()["ACCENT"] = it["accent"]
+                mk, mjs, _, _ = MASCOTS[it["char"]]
+                svg, meta = mk(cid, cx, by, 0.42)
+                svgs += svg + f'<div class="abs" style="left:{cx - 100}px; top:{by + 18}px; width:200px; text-align:center; font-family:var(--font-black); font-weight:900; font-size:27px; color:{it["accent"]};">{it["name"]}</div>'
+                anim.append((cid, mjs, meta))
+            globals()["ACCENT"] = saved
+            html_scenes.append(head + f'<div class="full" id="{sid}bg" style="background:url(assets/{sc.get("paper", "paper.jpg")}) center/cover;"></div>' + svgs + hl + "</div>")
+            js.append(f'tl.from("#{sid}h", {{ opacity: 0, y: 36, duration: 0.5, ease: "power3.out" }}, {round(t0 + 0.1, 2)});')
+            for j, (cid, mjs, meta) in enumerate(anim):
+                js.append(f'tl.from("#{cid}W", {{ opacity: 0, y: 60, duration: 0.45, ease: "back.out(1.8)" }}, {round(t0 + 0.4 + 0.18 * j, 2)});')
+                js.extend(mjs(cid, meta, round(t0 + 0.9 + 0.18 * j, 2), round(dur - 1.0, 2)))
+            js.append(exit_js)
+        elif sc["type"] == "subject":   # 과목 하나 소개: 과목 전용 종이 + 캐릭터 + 포인트 색
+            os.makedirs(d + "/assets", exist_ok=True)
+            shutil.copy(B.ASSETS + "/" + sc["paper"], d + "/assets/" + sc["paper"])
+            saved = globals()["ACCENT"]
+            globals()["ACCENT"] = sc["accent"]
+            mk, mjs, (mby, ms), _ = MASCOTS[sc["char"]]
+            svg, meta = mk(sid + "m", 540, mby, ms)
+            globals()["ACCENT"] = saved
+            head2 = head.replace(">", f' style="--orange:{sc["accent"]}; --orange-t:{sc.get("accent_t", sc["accent"])};">', 1)
+            html_scenes.append(head2 + f'<div class="full" id="{sid}bg" style="background:url(assets/{sc["paper"]}) center/cover;"></div>' + svg + hl + "</div>")
+            js.append(f'tl.from("#{sid}bg", {{ opacity: 0, duration: 0.3 }}, {t0});')
+            js.append(f'tl.from("#{sid}h", {{ scale: 0.86, y: 24, duration: 0.55, ease: "back.out(1.7)" }}, {round(t0 + 0.1, 2)});')
+            js.append(f'tl.from("#{sid}mW", {{ opacity: 0, y: 90, duration: 0.5, ease: "back.out(1.6)" }}, {round(t0 + 0.2, 2)});')
+            js.extend(mjs(sid + "m", meta, round(t0 + 0.7, 2), round(dur - 0.8, 2)))
+            js.append(exit_js)
         elif sc["type"] == "versus":
             L, R = sc["left"], sc["right"]
             def vcard(side, d):
@@ -648,6 +686,7 @@ def build(n):
         if i < len(lines) - 1:
             capjs.append(f'tl.to("#c{i} div", {{ opacity: 0, duration: 0.2 }}, {round(c0 + cd - 0.2, 2)});')
 
+    hud_ep = f" · EP.{n}" if (len(EPS) > 1 or PROGRESS) else ""
     hud_extra = f"/{len(EPS)}" if PROGRESS else ""
     hud_bar = f'<i style="width:{round(100 * n / len(EPS))}%"></i>' if PROGRESS else ""
     html = f"""<!doctype html>
@@ -662,7 +701,7 @@ def build(n):
 {DEFS}
     <div id="root" data-composition-id="main" data-start="0" data-duration="{total}" data-width="1080" data-height="1920">
       {chr(10).join("      " + s for s in html_scenes).strip()}
-      <div id="hud" class="clip" data-start="0" data-duration="{total}" data-track-index="1"><div class="tag">{BRAND} · EP.{n}{hud_extra}{hud_bar}</div></div>
+      <div id="hud" class="clip" data-start="0" data-duration="{total}" data-track-index="1"><div class="tag">{BRAND}{hud_ep}{hud_extra}{hud_bar}</div></div>
       <audio id="mix" class="clip" src="assets/mix.wav" data-start="0" data-duration="{total}" data-track-index="9"></audio>
 {caps}    </div>
     <script>
