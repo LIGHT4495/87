@@ -15,7 +15,7 @@ description: 자격시험(예 사회복지사 1급) 기출문제 PDF를 읽고, 
 | `ENGINE=v2` 종이·주황 모션 | 구겨진 종이 질감 바탕 + 굵은 검정 헤드라인/주황 강조 + 흰 알약 카드 패널 + 다크 목업/도장 + 주황 공에 매달린 캐릭터 | 실천론(세이지 그린 종이) — 사용자가 준 레퍼런스 모션그래픽 스타일 |
 바탕색은 영역마다 바꾼다(피드에서 구분). 자세한 값과 바꾸는 법: `references/style-guide.md`.
 - v2 옵션: `CHARACTER=swing`(주황 공에 매달린 여자아이, 기본) | `CHARACTER=cat`(책 더미에 앉아 손 흔드는 안경 고양이) | `CHARACTER=dog`(주황 스툴에 앉아 손 흔드는 강아지 — 꼬리·귀·손·눈 모션) · `PAPER_FILE=paper_pink.jpg`(종이색: `scripts/paper.py <out.jpg> "R,G,B"`로 영역별 생성).
-- v2 확장(3교시 시리즈에서 추가): `CHARACTER=owl|beaver|penguin`(올빼미 박사·비버 팀장·펭귄 판사), `STYLE=route|check|law`(노선도 / 결재 체크리스트+빨간펜 / 조문 § 카드), `ACCENT`·`ACCENT_T`·`ACCENT_L`·`ACCENT_RGB`(포인트 컬러), `PROGRESS=1`(HUD에 EP n/총편수 + 진행 막대), `TAIL=2.8`(정답 공개용 꼬리).
+- v2 확장(3교시 시리즈에서 추가): `CHARACTER=owl|beaver|penguin|rabbit|bear|turtle`(올빼미 박사·비버 팀장·펭귄 판사·토끼·곰·거북이), `STYLE=route|check|law`(노선도 / 결재 체크리스트+빨간펜 / 조문 § 카드), `ACCENT`·`ACCENT_T`·`ACCENT_L`·`ACCENT_RGB`(포인트 컬러), `PROGRESS=1`(HUD에 EP n/총편수 + 진행 막대), `TAIL=2.8`(정답 공개용 꼬리).
   - 정답 공개: 마지막 줄에 `pause=2.3`을 주고 cta에 `reveal=dict(line=정답줄, answer=정답버튼번호)` → 3·2·1 카운트다운 후 정답 버튼이 초록으로 강조.
   - `versus` 장면: 좌우 비교 카드(`left`/`right`=dict(line,title,items 2~4개)) + VS 배지.
   - 시리즈 프리셋은 `examples/presets.md` 참고.

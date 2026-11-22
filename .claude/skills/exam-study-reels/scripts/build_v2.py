@@ -374,9 +374,103 @@ def penguin_js(sid, meta, t0, dur):
     return out
 
 
+def rabbit_markup(sid, cx, by, s):
+    """White rabbit with long wobbling ears on a round cushion."""
+    parts = f"""
+<g transform="translate({cx} {by}) scale({s})">
+  <rect x="-130" y="-30" width="260" height="30" rx="10" fill="{ACCENT}"></rect><ellipse cx="0" cy="-30" rx="130" ry="22" fill="{ACCENT}" opacity="0.75"></ellipse>
+  <g id="{sid}C">
+    <ellipse cx="-44" cy="-36" rx="30" ry="14" fill="#fff"></ellipse><ellipse cx="44" cy="-36" rx="30" ry="14" fill="#fff"></ellipse>
+    <ellipse cx="0" cy="-120" rx="72" ry="92" fill="#fff"></ellipse><ellipse cx="0" cy="-110" rx="46" ry="62" fill="#ffeef2"></ellipse>
+    <circle cx="82" cy="-70" r="20" fill="#fff"></circle>
+    <g id="{sid}EL"><ellipse cx="-36" cy="-352" rx="24" ry="78" fill="#fff" transform="rotate(-8 -36 -352)"></ellipse><ellipse cx="-36" cy="-352" rx="11" ry="58" fill="#ffb3c1" transform="rotate(-8 -36 -352)"></ellipse></g>
+    <g id="{sid}ER"><ellipse cx="36" cy="-352" rx="24" ry="78" fill="#fff" transform="rotate(8 36 -352)"></ellipse><ellipse cx="36" cy="-352" rx="11" ry="58" fill="#ffb3c1" transform="rotate(8 36 -352)"></ellipse></g>
+    <circle cx="0" cy="-240" r="80" fill="#fff"></circle>
+    <circle cx="-48" cy="-216" r="11" fill="#ffb3c1" opacity="0.7"></circle><circle cx="48" cy="-216" r="11" fill="#ffb3c1" opacity="0.7"></circle>
+    <g id="{sid}E"><ellipse cx="-28" cy="-246" rx="9" ry="13" fill="#2a1a12"></ellipse><ellipse cx="28" cy="-246" rx="9" ry="13" fill="#2a1a12"></ellipse><circle cx="-25" cy="-250" r="3" fill="#fff"></circle><circle cx="31" cy="-250" r="3" fill="#fff"></circle></g>
+    <path d="M -8 -226 h 16 l -8 10 z" fill="#ff7b95"></path><path d="M -14 -212 Q -7 -204 0 -214 Q 7 -204 14 -212" stroke="#7a3b2a" stroke-width="4" fill="none" stroke-linecap="round"></path>
+    <path d="M -46 -226 L -96 -234 M -46 -216 L -94 -212 M 46 -226 L 96 -234 M 46 -216 L 94 -212" stroke="#c9b8bd" stroke-width="3" stroke-linecap="round"></path>
+    <path d="M -22 -170 Q 0 -160 22 -170 L 16 -150 Q 0 -140 -16 -150 Z" fill="{ACCENT}"></path>
+    <g id="{sid}P"><path d="M 50 -150 Q 90 -168 98 -222" stroke="#fff" stroke-width="28" stroke-linecap="round" fill="none"></path><circle cx="100" cy="-230" r="17" fill="#ffeef2"></circle></g>
+  </g>
+</g>"""
+    return _wrap(sid, parts), dict(el=(-36, -290), er=(36, -290), paw=(50, -150), eye=(0, -246))
+
+
+def rabbit_js(sid, meta, t0, dur):
+    out = []
+    _bob(out, sid, 9, 0.85, t0, dur)
+    _swing(out, f"#{sid}EL", -6, 10, meta["el"], 0.9, t0, dur)
+    _swing(out, f"#{sid}ER", 6, -12, meta["er"], 1.1, t0, dur)
+    _swing(out, f"#{sid}P", -14, 12, meta["paw"], 0.5, t0, dur)
+    _blink(out, sid, *meta["eye"], t0, dur, 1.7, 2.5)
+    return out
+
+
+def bear_markup(sid, cx, by, s):
+    """Brown bear with a scarf on a stack of books."""
+    parts = f"""
+<g transform="translate({cx} {by}) scale({s})">
+  <rect x="-140" y="-44" width="280" height="44" rx="10" fill="{ACCENT}"></rect><rect x="-120" y="-84" width="240" height="40" rx="10" fill="#f5e6c8"></rect><rect x="-120" y="-70" width="240" height="6" fill="#d9c6a0"></rect>
+  <g id="{sid}C">
+    <ellipse cx="-46" cy="-88" rx="30" ry="14" fill="#7a4a2a"></ellipse><ellipse cx="46" cy="-88" rx="30" ry="14" fill="#7a4a2a"></ellipse>
+    <ellipse cx="0" cy="-170" rx="84" ry="92" fill="#a56a3a"></ellipse><ellipse cx="0" cy="-156" rx="54" ry="66" fill="#e8c9a0"></ellipse>
+    <circle cx="-62" cy="-312" r="30" fill="#a56a3a"></circle><circle cx="62" cy="-312" r="30" fill="#a56a3a"></circle><circle cx="-62" cy="-312" r="15" fill="#e8c9a0"></circle><circle cx="62" cy="-312" r="15" fill="#e8c9a0"></circle>
+    <circle cx="0" cy="-262" r="82" fill="#a56a3a"></circle><ellipse cx="0" cy="-240" rx="40" ry="32" fill="#e8c9a0"></ellipse>
+    <ellipse cx="0" cy="-252" rx="14" ry="10" fill="#3a2a22"></ellipse><path d="M 0 -243 v 8 M -14 -232 Q 0 -218 14 -232" stroke="#3a2a22" stroke-width="4" fill="none" stroke-linecap="round"></path>
+    <g id="{sid}E"><circle cx="-30" cy="-282" r="9" fill="#2a1a12"></circle><circle cx="30" cy="-282" r="9" fill="#2a1a12"></circle><circle cx="-27" cy="-285" r="3" fill="#fff"></circle><circle cx="33" cy="-285" r="3" fill="#fff"></circle></g>
+    <circle cx="-52" cy="-250" r="10" fill="#ff9aa2" opacity="0.5"></circle><circle cx="52" cy="-250" r="10" fill="#ff9aa2" opacity="0.5"></circle>
+    <path d="M -66 -204 Q 0 -176 66 -204 L 60 -182 Q 0 -158 -60 -182 Z" fill="{ACCENT}"></path><path d="M 10 -178 L 36 -140 L 14 -134 Z" fill="{ACCENT}"></path>
+    <g id="{sid}P"><path d="M 56 -170 Q 96 -190 102 -246" stroke="#a56a3a" stroke-width="32" stroke-linecap="round" fill="none"></path><circle cx="104" cy="-254" r="19" fill="#e8c9a0"></circle></g>
+  </g>
+</g>"""
+    return _wrap(sid, parts), dict(paw=(56, -170), eye=(0, -282))
+
+
+def bear_js(sid, meta, t0, dur):
+    out = []
+    _bob(out, sid, 7, 0.95, t0, dur)
+    _swing(out, f"#{sid}P", -16, 14, meta["paw"], 0.55, t0, dur)
+    _blink(out, sid, *meta["eye"], t0, dur, 1.9, 2.7)
+    return out
+
+
+def turtle_markup(sid, cx, by, s):
+    """Little turtle scholar (round glasses) on a stone."""
+    parts = f"""
+<g transform="translate({cx} {by}) scale({s})">
+  <ellipse cx="0" cy="-26" rx="150" ry="28" fill="#9aa3a8"></ellipse><rect x="-150" y="-26" width="300" height="26" rx="12" fill="#7f898e"></rect>
+  <g id="{sid}C">
+    <ellipse cx="0" cy="-128" rx="112" ry="96" fill="{ACCENT}"></ellipse>
+    <path d="M -50 -170 l 22 -20 l 28 12 l 6 30 l -26 18 l -30 -10 z M 14 -172 l 28 -14 l 22 20 l -8 28 l -30 6 l -18 -22 z M -26 -110 l 30 -6 l 16 24 l -14 24 l -30 0 l -12 -22 z" fill="none" stroke="#ffffff" stroke-width="5" opacity="0.55"></path>
+    <ellipse cx="0" cy="-104" rx="62" ry="70" fill="#d8efd0"></ellipse>
+    <ellipse cx="-50" cy="-34" rx="32" ry="16" fill="#6fae6a"></ellipse><ellipse cx="50" cy="-34" rx="32" ry="16" fill="#6fae6a"></ellipse>
+    <g id="{sid}H">
+      <circle cx="0" cy="-248" r="74" fill="#7fc47a"></circle><circle cx="-46" cy="-228" r="10" fill="#ff9aa2" opacity="0.6"></circle><circle cx="46" cy="-228" r="10" fill="#ff9aa2" opacity="0.6"></circle>
+      <g id="{sid}E"><circle cx="-26" cy="-256" r="9" fill="#2a1a12"></circle><circle cx="26" cy="-256" r="9" fill="#2a1a12"></circle><circle cx="-23" cy="-259" r="3" fill="#fff"></circle><circle cx="29" cy="-259" r="3" fill="#fff"></circle></g>
+      <circle cx="-26" cy="-256" r="24" fill="none" stroke="#2a2a2a" stroke-width="5"></circle><circle cx="26" cy="-256" r="24" fill="none" stroke="#2a2a2a" stroke-width="5"></circle><path d="M -2 -256 h 4" stroke="#2a2a2a" stroke-width="5"></path>
+      <path d="M -16 -222 Q 0 -206 16 -222" stroke="#3a5a38" stroke-width="5" fill="none" stroke-linecap="round"></path>
+    </g>
+    <g id="{sid}P"><path d="M 74 -140 Q 112 -160 118 -212" stroke="#7fc47a" stroke-width="30" stroke-linecap="round" fill="none"></path><circle cx="120" cy="-220" r="17" fill="#d8efd0"></circle></g>
+  </g>
+</g>"""
+    return _wrap(sid, parts), dict(head=(0, -180), paw=(74, -140), eye=(0, -256))
+
+
+def turtle_js(sid, meta, t0, dur):
+    out = []
+    _bob(out, sid, 6, 1.0, t0, dur)
+    _swing(out, f"#{sid}H", -4, 5, meta["head"], 1.2, t0, dur)
+    _swing(out, f"#{sid}P", -14, 12, meta["paw"], 0.55, t0, dur)
+    _blink(out, sid, *meta["eye"], t0, dur, 1.8, 2.6)
+    return out
+
+
 MASCOTS = {"cat": (cat_markup, cat_js, (1015, 0.92), (1020, 0.58)), "dog": (dog_markup, dog_js, (1015, 1.0), (1020, 0.62)),
            "owl": (owl_markup, owl_js, (1015, 0.86), (1020, 0.5)), "beaver": (beaver_markup, beaver_js, (1015, 1.0), (1020, 0.58)),
-           "penguin": (penguin_markup, penguin_js, (1015, 0.92), (1020, 0.54))}
+           "penguin": (penguin_markup, penguin_js, (1015, 0.92), (1020, 0.54)),
+           "rabbit": (rabbit_markup, rabbit_js, (1015, 0.9), (1020, 0.52)), "bear": (bear_markup, bear_js, (1015, 0.95), (1020, 0.56)),
+           "turtle": (turtle_markup, turtle_js, (1015, 1.0), (1020, 0.6))}
 
 
 def build(n):
