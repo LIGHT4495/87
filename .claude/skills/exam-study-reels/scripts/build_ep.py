@@ -18,7 +18,7 @@ SERIES = WORK + "/" + os.environ.get("SERIESDIR", "series")
 
 GAP = 0.45
 LEAD = 0.3
-TAIL = 2.0
+TAIL = float(os.environ.get("TAIL", "2.0"))   # v2 answer-reveal series use TAIL=2.8
 
 
 def ep_dir(n):
@@ -105,7 +105,7 @@ async def tts_all(ns):
         t = LEAD
         for x in info:
             x["start"] = round(t, 2)
-            t += x["dur"] + GAP
+            t += x["dur"] + GAP + EPS[n]["lines"][x["i"] + 1].get("pause", 0) if x["i"] + 1 < len(EPS[n]["lines"]) else 0
         json.dump(info, open(d + "/info.json", "w"))
         print(f"ep{n}: {len(info)} lines, ends {info[-1]['start'] + info[-1]['dur']:.1f}s")
 

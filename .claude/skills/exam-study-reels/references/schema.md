@@ -49,3 +49,10 @@ EPS[1] = dict(
 - 퀴즈 버튼: 한 줄에 2개 — 각 5~6자 이내("민주주의?" 가능, "비동일 통제집단?" 불가).
 - 퀴즈 질문(`q`): 14자 이내.
 - `python3 scripts/lint_content.py`로 한계를 사전 점검한다.
+
+## v2 추가 항목
+- 줄(line): `pause`(초) — 이 줄 앞에 침묵을 넣는다(정답 공개 카운트다운용, 보통 2.3).
+- `versus`: `headline`, `left`/`right`=dict(`line`, `title`(7자 이내), `items`(2~4개, 각 9자 이내)) — 좌우 비교 + VS 배지.
+- `cta.reveal`: dict(`line`=정답을 말하는 줄, `answer`=정답 버튼 인덱스) — 3-2-1 카운트다운 뒤 정답 강조.
+- `exam`을 여러 줄에 걸치려면 `lines=[앞줄, ..., stamp_line]`.
+- 환경변수: CHARACTER(owl|beaver|penguin 추가), STYLE(route|check|law), ACCENT*, PROGRESS, TAIL — SKILL.md 참고.

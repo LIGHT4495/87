@@ -84,25 +84,25 @@ EPS[3] = dict(
     music=(92, 3, 73),
     lines=[
         dict(say="지역사회복지 이론, 사례를 보고 이름을 맞혀 볼까요?"),
-        dict(say="자원의존이론은 자원 교환의 불균형을 경쟁이나 재평가 같은 전략으로 고쳐요."),
+        dict(say="권력의존이론은 권력의 균형적 배분을 위해 지역사회 자원 개발에 힘쓰라고 봐요."),
         dict(say="사회체계이론은 하위체계들이 서로 어떻게 연관돼 상호작용하는지 봐요."),
         dict(say="자원동원이론은 사회운동의 성패가 충원과 자금조달, 조직구조에 달렸다고 봐요."),
-        dict(say="기출 사례는 보조금 지도점검과 중앙정부 예산지원에 영향을 받는 지자체라서, 자원의존이론이에요."),
+        dict(say="기출 사례는 보조금 지도점검과 중앙정부 예산지원에 영향을 받는 지자체라서, 권력의존이론이에요."),
         dict(say="또 장애인 학대 문제를 가족, 이웃, 공공기관 등 하위체계의 연관으로 보면 사회체계이론이에요."),
-        dict(say="그럼 자원 교환의 불균형을 고치는 이론은, 자원의존이론일까요 자원동원이론일까요?"),
+        dict(say="그럼 권력의 균형적 배분 이론은, 권력의존일까요 자원동원일까요?"),
     ],
     scenes=[
         dict(type="hook", lines=[0], headline="지역사회복지 이론,<br>[[사례로 맞히기]]"),
         dict(type="cards", lines=[1, 2, 3], headline="이론과<br>[[핵심 설명]]", rows=[
-            dict(line=1, title="자원의존이론", desc="자원 교환의 불균형을<br>경쟁 · 재평가로 수정"),
+            dict(line=1, title="권력의존이론", desc="권력의 균형적 배분을 위해<br>지역사회 자원 개발"),
             dict(line=2, title="사회체계이론", desc="하위체계들이 서로 연관되어<br>상호작용하는 것을 봐요"),
             dict(line=3, title="자원동원이론", desc="사회운동의 성패는 충원 · 자금<br>조직구조 능력에 달렸어요"),
         ]),
         dict(type="exam", lines=[4], headline="이 사례,<br>[[어떤 이론일까요?]]", tag="제24회 기출 응용 · 지역사회복지론 · 55번",
-             html="보조금 지도점검을 받은<br>사회복지관, 중앙 예산에<br>영향받는 지자체", stamp="자원의존이론!", stamp_color=GRN, stamp_line=4, stamp_frac=0.85),
+             html="보조금 지도점검을 받은<br>사회복지관, 중앙 예산에<br>영향받는 지자체", stamp="권력의존이론!", stamp_color=GRN, stamp_line=4, stamp_frac=0.85),
         dict(type="exam", lines=[5], headline="이 사례,<br>[[어떤 이론일까요?]]", tag="제24회 기출 응용 · 지역사회복지론 · 56번",
              html="장애인 학대 문제를<br>가족 · 이웃 · 공공기관 등<br>하위체계의 연관으로 파악", stamp="사회체계이론!", stamp_color=GRN, stamp_line=5, stamp_frac=0.85),
-        dict(type="cta", lines=[6], headline=CTA_HEAD, q="교환의 불균형 수정은?", buttons=[("자원의존?", 0), ("자원동원?", 1)]),
+        dict(type="cta", lines=[6], headline=CTA_HEAD, q="권력 균형 배분은?", buttons=[("권력의존?", 0), ("자원동원?", 1)]),
     ],
 )
 

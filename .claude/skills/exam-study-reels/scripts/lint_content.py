@@ -38,6 +38,14 @@ for n, ep in sorted(EPS.items()):
                 if wt > avail * 0.97: bad += 1; print(f"EP{n} s{k} title too wide: {r['title']} ({wt:.0f}>{avail})")
                 if wd > avail * 0.97: bad += 1; print(f"EP{n} s{k} desc too wide: {r['desc']} ({wd:.0f}>{avail})")
                 if h < 140 and len(lines) > 1: bad += 1; print(f"EP{n} s{k} 4-row card should have a 1-line desc: {r['title']}")
+        elif sc["type"] == "versus":
+            for side in ("left", "right"):
+                d = sc[side]
+                if not 2 <= len(d["items"]) <= 4: bad += 1; print(f"EP{n} s{k} {side}: items must be 2~4")
+                if tw(d["title"]) * 42 > 316: bad += 1; print(f"EP{n} s{k} {side} title too wide: {d['title']}")
+                for t in d["items"]:
+                    if tw(t) * 32 > 2 * 296 * 0.97 or (tw(t) * 32 > 296 * 0.97 and "<br>" not in t and False): bad += 1; print(f"EP{n} s{k} {side} item too long: {t}")
+                    if "<br>" not in t and tw(t) * 32 > 296 * 0.97: print(f"EP{n} s{k} {side} item wraps to 2 lines (ok if intended): {t}")
         elif sc["type"] == "exam":
             for x in sc["html"].split("<br>"):
                 w = tw(strip(x)) * (46 if ENGINE == "v2" else 50)
