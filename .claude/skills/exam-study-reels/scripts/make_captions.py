@@ -11,6 +11,7 @@ from build_ep import EPS
 
 COMMON = "#사회복지사1급 #사회복지사 #사회복지사시험 #사회복지사1급기출 #사회복지사1급공부 #사회복지공부 #자격증공부 #수험생 #기출분석 #릴스공부"
 EXAM_TAG = os.environ.get("EXAM_TAG", "#24회사회복지사")
+EXAM_NAME = os.environ.get("EXAM_NAME", "제24회")   # 예: EXAM_NAME=제22회 EXAM_TAG=#22회사회복지사
 clean = lambda s: re.sub(r"\s+", " ", re.sub(r"<br>|\[\[|\]\]", " ", s)).strip()
 
 
@@ -40,7 +41,7 @@ lines = [f"# {subject} 캡션 · 해시태그 · 고정 댓글 초안", "", "## 
 for n, ep in sorted(EPS.items()):
     title = ep.get("caption") or hook_title(ep)
     lines += [f"## EP{n} · {title}", "", "**캡션**",
-              f"{title}! 제24회 기출 응용으로 헷갈리는 개념을 이야기로 정리했어요.",
+              f"{title}! {EXAM_NAME} 기출 응용으로 헷갈리는 개념을 이야기로 정리했어요.",
               "정답은 고정 댓글에 있어요. 먼저 댓글로 맞혀 보세요 👇",
               "저장해 두고 시험 전날 다시 보면 헷갈림 끝!", "", tags, "",
               "**고정 댓글**", answer_text(ep), ""]
