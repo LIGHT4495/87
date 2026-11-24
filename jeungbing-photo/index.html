@@ -1,0 +1,90 @@
+<!doctype html>
+<html lang="ko">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="color-scheme" content="dark light">
+<meta name="theme-color" content="#101614">
+<title>증빙사진 도우미</title>
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+<main class="wrap">
+  <header class="head">
+    <h1>증빙사진 도우미</h1>
+    <p class="lead">우리 기관 한글 양식을 올리고 휴대폰으로 물품·영수증 사진을 찍으면, 양식 그대로 사진과 글자가 채워진 한글 파일이 나와요. 물품이 여러 개면 한 장씩 이어 붙여 줘요.</p>
+  </header>
+
+  <!-- 1. 양식 올리기 -->
+  <section class="card" aria-labelledby="s1">
+    <h2 id="s1"><span class="num">1</span>기관 양식 올리기 <span class="pill" id="tplBadge">예시 양식 사용 중</span></h2>
+
+    <div class="notice" role="note">
+      <span class="notice-ico" aria-hidden="true">!</span>
+      <p><strong>HWP 파일은 안 돼요.</strong> HWPX 파일만 올릴 수 있어요.<br>
+      <b>파일 → 다른 이름으로 저장 → 파일 형식 "HWPX"</b>로 저장한 뒤 올려 주세요.</p>
+    </div>
+
+    <h3>처음 한 번만, 양식에 표시하기</h3>
+    <ol class="steps">
+      <li>한글에서 기관 양식을 열어요.</li>
+      <li>사진 칸에 <code class="tok">{사진}</code>, 날짜 칸에 <code class="tok">{날짜}</code>, 나머지 칸에 <code class="tok">{품목}</code> <code class="tok">{수량}</code> <code class="tok">{금액}</code>처럼 <b>중괄호</b>로 적어요.</li>
+      <li><b>HWPX</b>로 저장해서 아래에 올려요.</li>
+    </ol>
+
+    <button type="button" class="btn ghost" id="sampleBtn">예시 양식 내려받기</button>
+
+    <div class="sample" aria-hidden="true">
+      <div class="sample-paper">
+        <div class="sample-title">물품 구입 증빙 사진</div>
+        <div class="sample-row"><span>품목</span><span><code class="tok">{품목}</code></span></div>
+        <div class="sample-row"><span>구입일</span><span><code class="tok">{날짜}</code></span></div>
+        <div class="sample-row"><span>수량</span><span><code class="tok">{수량}</code></span></div>
+        <div class="sample-row"><span>금액</span><span><code class="tok">{금액}</code>원</span></div>
+        <div class="sample-row tall"><span>사진</span><span><code class="tok photo">{사진}</code></span></div>
+      </div>
+    </div>
+
+    <label class="drop" id="drop" tabindex="0">
+      <input type="file" id="tplInput" accept=".hwpx,application/hwp+zip,application/octet-stream" hidden>
+      <svg class="drop-ico" viewBox="0 0 24 24" width="40" height="40" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M14 3H7a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2V8z"/><path d="M14 3v5h5"/><path d="M12 17v-6M9.5 13.5 12 11l2.5 2.5"/></svg>
+      <span class="drop-txt">
+        <strong>우리 기관 양식(.hwpx) 올리기</strong>
+        <small>끌어다 놓거나 눌러서 고르세요. 한 번 올리면 이 기기에 기억해 둬요.</small>
+      </span>
+    </label>
+    <p class="tpl-error" id="tplError" role="alert" hidden></p>
+
+    <div class="chips" id="chips" aria-label="양식에서 찾은 표시"></div>
+    <button type="button" class="link" id="resetTpl" hidden>예시 양식으로 되돌리기</button>
+  </section>
+
+  <!-- 2. 사진 찍고 칸 채우기 -->
+  <section class="card" aria-labelledby="s2">
+    <h2 id="s2"><span class="num">2</span>사진 찍고 칸 채우기</h2>
+    <div id="items"></div>
+    <div class="addrow">
+      <button type="button" class="btn ghost" id="addBtn">+ 한 장 더 (다음 물품)</button>
+      <span class="count" id="count">지금 1장</span>
+    </div>
+  </section>
+
+  <!-- 3. 받기 -->
+  <section class="card" aria-labelledby="s3">
+    <h2 id="s3"><span class="num">3</span>한글 파일 받기</h2>
+    <button type="button" class="btn primary" id="makeBtn">양식 그대로 한글 파일(HWPX) 받기</button>
+    <button type="button" class="btn ghost share" id="shareBtn" hidden>카카오톡 등으로 바로 보내기</button>
+    <p class="status" id="status" role="status" aria-live="polite"></p>
+  </section>
+
+  <footer class="foot">
+    <p>양식과 사진은 이 기기 안에서만 처리하고 어디로도 보내지 않습니다.</p>
+    <p>휴대폰에서 받은 파일은 카카오톡 '나와의 채팅' 등으로 컴퓨터에 옮겨 한글에서 여세요. 아이폰 HEIC 사진은 '높은 호환성'으로 찍어 주세요.</p>
+  </footer>
+</main>
+
+<script src="vendor/jszip.min.js"></script>
+<script src="hwpx.js"></script>
+<script src="app.js"></script>
+</body>
+</html>
