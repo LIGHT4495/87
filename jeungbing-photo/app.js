@@ -101,7 +101,7 @@
 
   async function useSample() {
     var bytes = await Hwpx.buildSampleTemplate();
-    await loadTemplate(bytes.buffer.slice(bytes.byteOffset, bytes.byteOffset + bytes.byteLength), '기본 양식(연습용).hwpx', true, false);
+    await loadTemplate(bytes.buffer.slice(bytes.byteOffset, bytes.byteOffset + bytes.byteLength), '등대의집 연습용 양식.hwpx', true, false);
   }
 
   function showTplError(msg) {
@@ -130,7 +130,7 @@
 
   function renderTemplate() {
     var t = state.tpl;
-    $('tplBadge').textContent = t.isSample ? '기본 양식 사용 중' : '내 양식: ' + t.name;
+    $('tplBadge').textContent = t.isSample ? '연습용 양식 사용 중' : '내 양식: ' + t.name;
     $('resetTpl').hidden = t.isSample;
     var chips = $('chips');
     chips.textContent = '';
@@ -288,7 +288,7 @@
       var bytes = await Hwpx.fillTemplate(t.buf, used.map(function (it) {
         return { values: it.values, photo: it.photo ? { data: it.photo.data, width: it.photo.width, height: it.photo.height, ext: it.photo.ext } : null };
       }));
-      lastName = (t.isSample ? '증빙사진' : baseName(t.name)) + '_' + fmtToday(new Date()).replace(/[^\d]/g, '') + '.hwpx';
+      lastName = (t.isSample ? '등대의집_증빙사진' : baseName(t.name)) + '_' + fmtToday(new Date()).replace(/[^\d]/g, '') + '.hwpx';
       lastBlob = download(bytes, lastName);
       setStatus('완성! 총 ' + used.length + '건이 담긴 문서를 내려받았어요. 카카오톡 \'나와의 채팅\' 등으로 PC에 옮겨 한글에서 열어 주세요.', 'ok');
       var canShare = false;
@@ -312,7 +312,7 @@
   function wire() {
     $('sampleBtn').addEventListener('click', async function () {
       var bytes = await Hwpx.buildSampleTemplate();
-      download(bytes, '증빙사진_연습용양식.hwpx');
+      download(bytes, '등대의집_연습용양식.hwpx');
     });
     $('tplInput').addEventListener('change', function (e) { onTemplateFile(e.target.files[0]); e.target.value = ''; });
     var drop = $('drop');

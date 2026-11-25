@@ -4,16 +4,18 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <meta name="color-scheme" content="light dark">
-<meta name="theme-color" content="#f6f3ec">
-<title>찰칵 증빙</title>
+<meta name="theme-color" content="#1d3b63">
+<meta name="apple-mobile-web-app-title" content="등대 증빙">
+<title>등대의집 증빙사진</title>
+<link rel="manifest" href="manifest.webmanifest">
+<link rel="icon" type="image/svg+xml" href="icon.svg">
+<link rel="apple-touch-icon" href="apple-touch-icon.png">
 <link rel="stylesheet" href="style.css">
 </head>
 <body>
 <header class="top">
   <div class="top-in">
-    <div class="brand"><span class="logo" aria-hidden="true">
-      <svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 8h3l1.5-2h7L17 8h3a1 1 0 0 1 1 1v9a1 1 0 0 1-1 1H4a1 1 0 0 1-1-1V9a1 1 0 0 1 1-1z"/><circle cx="12" cy="13" r="3.5"/></svg>
-    </span><strong>찰칵 증빙</strong></div>
+    <div class="brand"><img class="logo" src="icon.svg" alt="" width="32" height="32"><strong>등대의집 증빙사진</strong></div>
     <nav class="progress" aria-label="진행 단계">
       <a href="#s1"><i>1</i>양식 등록</a>
       <a href="#s2"><i>2</i>촬영·입력</a>
@@ -24,8 +26,9 @@
 
 <main class="wrap">
   <section class="hero">
-    <h1>찍으면 양식이 채워져요</h1>
-    <p>기관에서 쓰는 한글 양식을 한 번만 등록해 두세요. 현장에서 사진을 찍고 몇 글자만 적으면, 양식의 각 칸에 사진과 내용이 들어간 문서가 만들어져요. 물품이 여러 개여도 한 문서로 묶어 드려요.</p>
+    <p class="eyebrow">등대의집 전용</p>
+    <h1>사진을 찍으면<br>증빙 문서가 채워져요</h1>
+    <p>등대의집에서 쓰는 한글 양식을 한 번만 등록해 두세요. 물품 사진을 찍고 몇 글자만 적으면, 양식의 각 칸이 채워진 문서가 만들어져요. 물품이 여러 개여도 한 문서로 묶어 드려요.</p>
   </section>
 
   <!-- 1. 양식 등록 -->
@@ -33,7 +36,7 @@
     <div class="panel-head">
       <span class="step">STEP 1</span>
       <h2 id="h1">양식 등록</h2>
-      <span class="pill" id="tplBadge">기본 양식 사용 중</span>
+      <span class="pill" id="tplBadge">연습용 양식 사용 중</span>
     </div>
 
     <div class="notice" role="note">
@@ -43,7 +46,7 @@
 
     <h3>양식 준비하는 방법</h3>
     <ol class="steps">
-      <li>한글에서 기관 양식을 열어요.</li>
+      <li>한글에서 등대의집 양식을 열어요.</li>
       <li>채워질 칸에 <b>이름표</b>를 중괄호로 적어요. 사진 칸은 <code class="tok photo">{사진}</code>, 날짜 칸은 <code class="tok">{날짜}</code>, 그 밖의 칸은 <code class="tok">{품목}</code> <code class="tok">{수량}</code> <code class="tok">{금액}</code>처럼요.</li>
       <li>HWPX로 저장해서 아래에 등록해요.</li>
     </ol>
@@ -55,7 +58,7 @@
 
     <figure class="sample" aria-label="이름표를 넣은 양식 예시">
       <div class="sample-paper">
-        <div class="sample-band">구입 증빙 자료</div>
+        <div class="sample-band">등대의집 구입 증빙</div>
         <dl>
           <div><dt>품목</dt><dd><code class="tok">{품목}</code></dd></div>
           <div><dt>구입일</dt><dd><code class="tok">{날짜}</code></dd></div>
@@ -74,7 +77,7 @@
       </span>
       <span class="drop-txt">
         <strong>양식 파일(.hwpx) 등록하기</strong>
-        <small>여기로 끌어오거나 눌러서 선택하세요. 등록한 양식은 이 기기의 브라우저에만 저장돼요.</small>
+        <small>여기로 끌어오거나 눌러서 선택하세요. 등록한 양식은 이 기기에만 저장돼요.</small>
       </span>
     </label>
     <p class="tpl-error" id="tplError" role="alert" hidden></p>
@@ -83,7 +86,7 @@
       <span class="found-title">양식에서 찾은 이름표</span>
       <div class="chips" id="chips" aria-label="양식에서 찾은 이름표"></div>
     </div>
-    <button type="button" class="link" id="resetTpl" hidden>기본(연습용) 양식으로 되돌리기</button>
+    <button type="button" class="link" id="resetTpl" hidden>연습용 양식으로 되돌리기</button>
   </section>
 
   <!-- 2. 촬영·입력 -->
@@ -111,7 +114,8 @@
   </section>
 
   <footer class="foot">
-    <p>🔒 사진과 양식은 기기 밖으로 전송되지 않아요. 모든 처리는 이 브라우저 안에서 이루어져요.</p>
+    <p>사진과 양식은 기기 밖으로 전송되지 않아요. 모든 처리는 이 기기의 브라우저 안에서 이루어져요.</p>
+    <p>증빙 사진은 물품과 영수증 위주로 찍어 주세요. 이용인의 얼굴이 담기지 않도록 해 주세요.</p>
     <p>만들어진 파일은 카카오톡 '나와의 채팅' 등으로 PC에 옮겨 한글에서 열어 주세요. 아이폰 사진이 읽히지 않으면 카메라 형식을 '높은 호환성'으로 바꿔 주세요.</p>
   </footer>
 </main>

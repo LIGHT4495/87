@@ -32,7 +32,7 @@ jobs:
       - name: Stage site
         run: |
           mkdir _site
-          cp jeungbing-photo/{index.html,app.js,hwpx.js,style.css} _site/
+          cp jeungbing-photo/{index.html,app.js,hwpx.js,style.css,manifest.webmanifest,icon.svg,icon-192.png,icon-512.png,icon-maskable-512.png,apple-touch-icon.png} _site/
           cp -r jeungbing-photo/vendor _site/vendor
       - uses: actions/configure-pages@v5
       - uses: actions/upload-pages-artifact@v4
