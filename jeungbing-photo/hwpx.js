@@ -525,7 +525,7 @@
       '<hp:ctrl><hp:colPr id="" type="NEWSPAPER" layout="LEFT" colCount="1" sameSz="1" sameGap="0"/></hp:ctrl>';
 
     return XML_DECL + '<hs:sec ' + NSDECL + '>' +
-      P(secPr + T('물품 구입 증빙 사진'), 1, 1) +
+      P(secPr + T('구입 증빙 자료'), 1, 1) +
       P('', 0, 0) +
       P(tbl + T(''), 0, 0) +
       '</hs:sec>';
@@ -540,7 +540,7 @@
     zip.file('META-INF/container.xml', XML_DECL + '<ocf:container xmlns:ocf="urn:oasis:names:tc:opendocument:xmlns:container" xmlns:hpf="http://www.hancom.co.kr/schema/2011/hpf"><ocf:rootfiles><ocf:rootfile full-path="Contents/content.hpf" media-type="application/hwpml-package+xml"/></ocf:rootfiles></ocf:container>');
     zip.file('META-INF/manifest.xml', XML_DECL + '<odf:manifest xmlns:odf="urn:oasis:names:tc:opendocument:xmlns:manifest:1.0"/>');
     zip.file('Contents/content.hpf', XML_DECL + '<opf:package ' + NSDECL + ' version="" unique-identifier="" id="">' +
-      '<opf:metadata><opf:title>물품 구입 증빙 사진 양식</opf:title><opf:language>ko</opf:language></opf:metadata>' +
+      '<opf:metadata><opf:title>구입 증빙 자료 양식</opf:title><opf:language>ko</opf:language></opf:metadata>' +
       '<opf:manifest><opf:item id="header" href="Contents/header.xml" media-type="application/xml"/>' +
       '<opf:item id="section0" href="Contents/section0.xml" media-type="application/xml"/>' +
       '<opf:item id="settings" href="settings.xml" media-type="application/xml"/></opf:manifest>' +

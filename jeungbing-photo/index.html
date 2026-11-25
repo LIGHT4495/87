@@ -3,83 +3,116 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
-<meta name="color-scheme" content="dark light">
-<meta name="theme-color" content="#101614">
-<title>증빙사진 도우미</title>
+<meta name="color-scheme" content="light dark">
+<meta name="theme-color" content="#f6f3ec">
+<title>찰칵 증빙</title>
 <link rel="stylesheet" href="style.css">
 </head>
 <body>
-<main class="wrap">
-  <header class="head">
-    <h1>증빙사진 도우미</h1>
-    <p class="lead">우리 기관 한글 양식을 올리고 휴대폰으로 물품·영수증 사진을 찍으면, 양식 그대로 사진과 글자가 채워진 한글 파일이 나와요. 물품이 여러 개면 한 장씩 이어 붙여 줘요.</p>
-  </header>
+<header class="top">
+  <div class="top-in">
+    <div class="brand"><span class="logo" aria-hidden="true">
+      <svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 8h3l1.5-2h7L17 8h3a1 1 0 0 1 1 1v9a1 1 0 0 1-1 1H4a1 1 0 0 1-1-1V9a1 1 0 0 1 1-1z"/><circle cx="12" cy="13" r="3.5"/></svg>
+    </span><strong>찰칵 증빙</strong></div>
+    <nav class="progress" aria-label="진행 단계">
+      <a href="#s1"><i>1</i>양식 등록</a>
+      <a href="#s2"><i>2</i>촬영·입력</a>
+      <a href="#s3"><i>3</i>문서 만들기</a>
+    </nav>
+  </div>
+</header>
 
-  <!-- 1. 양식 올리기 -->
-  <section class="card" aria-labelledby="s1">
-    <h2 id="s1"><span class="num">1</span>기관 양식 올리기 <span class="pill" id="tplBadge">예시 양식 사용 중</span></h2>
+<main class="wrap">
+  <section class="hero">
+    <h1>찍으면 양식이 채워져요</h1>
+    <p>기관에서 쓰는 한글 양식을 한 번만 등록해 두세요. 현장에서 사진을 찍고 몇 글자만 적으면, 양식의 각 칸에 사진과 내용이 들어간 문서가 만들어져요. 물품이 여러 개여도 한 문서로 묶어 드려요.</p>
+  </section>
+
+  <!-- 1. 양식 등록 -->
+  <section class="panel" id="s1" aria-labelledby="h1">
+    <div class="panel-head">
+      <span class="step">STEP 1</span>
+      <h2 id="h1">양식 등록</h2>
+      <span class="pill" id="tplBadge">기본 양식 사용 중</span>
+    </div>
 
     <div class="notice" role="note">
-      <span class="notice-ico" aria-hidden="true">!</span>
-      <p><strong>HWP 파일은 안 돼요.</strong> HWPX 파일만 올릴 수 있어요.<br>
-      <b>파일 → 다른 이름으로 저장 → 파일 형식 "HWPX"</b>로 저장한 뒤 올려 주세요.</p>
+      <svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 9v4M12 17h.01"/><path d="M10.3 3.9 1.8 18a2 2 0 0 0 1.7 3h17a2 2 0 0 0 1.7-3L13.7 3.9a2 2 0 0 0-3.4 0z"/></svg>
+      <p><strong>HWP 형식은 지원하지 않아요.</strong> 한글에서 <b>파일 → 다른 이름으로 저장 → 파일 형식을 HWPX</b>로 바꿔 저장한 뒤 등록해 주세요.</p>
     </div>
 
-    <h3>처음 한 번만, 양식에 표시하기</h3>
+    <h3>양식 준비하는 방법</h3>
     <ol class="steps">
       <li>한글에서 기관 양식을 열어요.</li>
-      <li>사진 칸에 <code class="tok">{사진}</code>, 날짜 칸에 <code class="tok">{날짜}</code>, 나머지 칸에 <code class="tok">{품목}</code> <code class="tok">{수량}</code> <code class="tok">{금액}</code>처럼 <b>중괄호</b>로 적어요.</li>
-      <li><b>HWPX</b>로 저장해서 아래에 올려요.</li>
+      <li>채워질 칸에 <b>이름표</b>를 중괄호로 적어요. 사진 칸은 <code class="tok photo">{사진}</code>, 날짜 칸은 <code class="tok">{날짜}</code>, 그 밖의 칸은 <code class="tok">{품목}</code> <code class="tok">{수량}</code> <code class="tok">{금액}</code>처럼요.</li>
+      <li>HWPX로 저장해서 아래에 등록해요.</li>
     </ol>
 
-    <button type="button" class="btn ghost" id="sampleBtn">예시 양식 내려받기</button>
-
-    <div class="sample" aria-hidden="true">
-      <div class="sample-paper">
-        <div class="sample-title">물품 구입 증빙 사진</div>
-        <div class="sample-row"><span>품목</span><span><code class="tok">{품목}</code></span></div>
-        <div class="sample-row"><span>구입일</span><span><code class="tok">{날짜}</code></span></div>
-        <div class="sample-row"><span>수량</span><span><code class="tok">{수량}</code></span></div>
-        <div class="sample-row"><span>금액</span><span><code class="tok">{금액}</code>원</span></div>
-        <div class="sample-row tall"><span>사진</span><span><code class="tok photo">{사진}</code></span></div>
-      </div>
+    <div class="row-actions">
+      <button type="button" class="btn ghost" id="sampleBtn">연습용 양식 받기</button>
+      <span class="hint">이름표가 어떻게 들어가는지 미리 볼 수 있어요.</span>
     </div>
+
+    <figure class="sample" aria-label="이름표를 넣은 양식 예시">
+      <div class="sample-paper">
+        <div class="sample-band">구입 증빙 자료</div>
+        <dl>
+          <div><dt>품목</dt><dd><code class="tok">{품목}</code></dd></div>
+          <div><dt>구입일</dt><dd><code class="tok">{날짜}</code></dd></div>
+          <div><dt>수량</dt><dd><code class="tok">{수량}</code></dd></div>
+          <div><dt>금액</dt><dd><code class="tok">{금액}</code>원</dd></div>
+          <div class="tall"><dt>사진</dt><dd><code class="tok photo">{사진}</code></dd></div>
+        </dl>
+      </div>
+      <figcaption>이렇게 칸마다 이름표를 적어 두면 돼요</figcaption>
+    </figure>
 
     <label class="drop" id="drop" tabindex="0">
       <input type="file" id="tplInput" accept=".hwpx,application/hwp+zip,application/octet-stream" hidden>
-      <svg class="drop-ico" viewBox="0 0 24 24" width="40" height="40" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M14 3H7a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2V8z"/><path d="M14 3v5h5"/><path d="M12 17v-6M9.5 13.5 12 11l2.5 2.5"/></svg>
+      <span class="drop-ico" aria-hidden="true">
+        <svg viewBox="0 0 24 24" width="26" height="26" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><path d="M17 8l-5-5-5 5"/><path d="M12 3v12"/></svg>
+      </span>
       <span class="drop-txt">
-        <strong>우리 기관 양식(.hwpx) 올리기</strong>
-        <small>끌어다 놓거나 눌러서 고르세요. 한 번 올리면 이 기기에 기억해 둬요.</small>
+        <strong>양식 파일(.hwpx) 등록하기</strong>
+        <small>여기로 끌어오거나 눌러서 선택하세요. 등록한 양식은 이 기기의 브라우저에만 저장돼요.</small>
       </span>
     </label>
     <p class="tpl-error" id="tplError" role="alert" hidden></p>
 
-    <div class="chips" id="chips" aria-label="양식에서 찾은 표시"></div>
-    <button type="button" class="link" id="resetTpl" hidden>예시 양식으로 되돌리기</button>
+    <div class="found">
+      <span class="found-title">양식에서 찾은 이름표</span>
+      <div class="chips" id="chips" aria-label="양식에서 찾은 이름표"></div>
+    </div>
+    <button type="button" class="link" id="resetTpl" hidden>기본(연습용) 양식으로 되돌리기</button>
   </section>
 
-  <!-- 2. 사진 찍고 칸 채우기 -->
-  <section class="card" aria-labelledby="s2">
-    <h2 id="s2"><span class="num">2</span>사진 찍고 칸 채우기</h2>
+  <!-- 2. 촬영·입력 -->
+  <section class="panel" id="s2" aria-labelledby="h2">
+    <div class="panel-head">
+      <span class="step">STEP 2</span>
+      <h2 id="h2">촬영·입력</h2>
+    </div>
     <div id="items"></div>
     <div class="addrow">
-      <button type="button" class="btn ghost" id="addBtn">+ 한 장 더 (다음 물품)</button>
-      <span class="count" id="count">지금 1장</span>
+      <button type="button" class="btn ghost" id="addBtn">+ 물품 추가</button>
+      <span class="count" id="count">총 1건</span>
     </div>
   </section>
 
-  <!-- 3. 받기 -->
-  <section class="card" aria-labelledby="s3">
-    <h2 id="s3"><span class="num">3</span>한글 파일 받기</h2>
-    <button type="button" class="btn primary" id="makeBtn">양식 그대로 한글 파일(HWPX) 받기</button>
-    <button type="button" class="btn ghost share" id="shareBtn" hidden>카카오톡 등으로 바로 보내기</button>
+  <!-- 3. 문서 만들기 -->
+  <section class="panel" id="s3" aria-labelledby="h3">
+    <div class="panel-head">
+      <span class="step">STEP 3</span>
+      <h2 id="h3">문서 만들기</h2>
+    </div>
+    <button type="button" class="btn primary" id="makeBtn">한글 문서(HWPX) 만들기</button>
+    <button type="button" class="btn ghost share" id="shareBtn" hidden>공유하기 (카카오톡 등)</button>
     <p class="status" id="status" role="status" aria-live="polite"></p>
   </section>
 
   <footer class="foot">
-    <p>양식과 사진은 이 기기 안에서만 처리하고 어디로도 보내지 않습니다.</p>
-    <p>휴대폰에서 받은 파일은 카카오톡 '나와의 채팅' 등으로 컴퓨터에 옮겨 한글에서 여세요. 아이폰 HEIC 사진은 '높은 호환성'으로 찍어 주세요.</p>
+    <p>🔒 사진과 양식은 기기 밖으로 전송되지 않아요. 모든 처리는 이 브라우저 안에서 이루어져요.</p>
+    <p>만들어진 파일은 카카오톡 '나와의 채팅' 등으로 PC에 옮겨 한글에서 열어 주세요. 아이폰 사진이 읽히지 않으면 카메라 형식을 '높은 호환성'으로 바꿔 주세요.</p>
   </footer>
 </main>
 
