@@ -1,0 +1,127 @@
+<!doctype html>
+<html lang="ko">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="color-scheme" content="light dark">
+<meta name="theme-color" content="#1d3b63">
+<meta name="apple-mobile-web-app-title" content="등대 증빙">
+<title>등대의집 증빙사진</title>
+<link rel="manifest" href="manifest.webmanifest">
+<link rel="icon" type="image/svg+xml" href="icon.svg">
+<link rel="apple-touch-icon" href="apple-touch-icon.png">
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+<header class="top">
+  <div class="top-in">
+    <div class="brand"><img class="logo" src="icon.svg" alt="" width="32" height="32"><strong>등대의집 증빙사진</strong></div>
+    <nav class="progress" aria-label="진행 단계">
+      <a href="#s1"><i>1</i>양식 등록</a>
+      <a href="#s2"><i>2</i>촬영·입력</a>
+      <a href="#s3"><i>3</i>문서 만들기</a>
+    </nav>
+  </div>
+</header>
+
+<main class="wrap">
+  <section class="hero">
+    <p class="eyebrow">등대의집 전용</p>
+    <h1>사진을 찍으면<br>증빙 문서가 채워져요</h1>
+    <p>등대의집에서 쓰는 한글 양식을 한 번만 등록해 두세요. 물품 사진을 찍고 몇 글자만 적으면, 양식의 각 칸이 채워진 문서가 만들어져요. 물품이 여러 개여도 한 문서로 묶어 드려요.</p>
+  </section>
+
+  <!-- 1. 양식 등록 -->
+  <section class="panel" id="s1" aria-labelledby="h1">
+    <div class="panel-head">
+      <span class="step">STEP 1</span>
+      <h2 id="h1">양식 등록</h2>
+      <span class="pill" id="tplBadge">연습용 양식 사용 중</span>
+    </div>
+
+    <div class="notice" role="note">
+      <svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 9v4M12 17h.01"/><path d="M10.3 3.9 1.8 18a2 2 0 0 0 1.7 3h17a2 2 0 0 0 1.7-3L13.7 3.9a2 2 0 0 0-3.4 0z"/></svg>
+      <p><strong>HWP 형식은 지원하지 않아요.</strong> 한글에서 <b>파일 → 다른 이름으로 저장 → 파일 형식을 HWPX</b>로 바꿔 저장한 뒤 등록해 주세요.</p>
+    </div>
+
+    <h3>양식 준비하는 방법</h3>
+    <ol class="steps">
+      <li>한글에서 등대의집 양식을 열어요.</li>
+      <li>채워질 칸에 <b>이름표</b>를 중괄호로 적어요. 사진 칸은 <code class="tok photo">{사진}</code>, 날짜 칸은 <code class="tok">{날짜}</code>, 그 밖의 칸은 <code class="tok">{품목}</code> <code class="tok">{수량}</code> <code class="tok">{금액}</code>처럼요.</li>
+      <li>HWPX로 저장해서 아래에 등록해요.</li>
+    </ol>
+
+    <div class="row-actions">
+      <button type="button" class="btn ghost" id="sampleBtn">연습용 양식 받기</button>
+      <span class="hint">이름표가 어떻게 들어가는지 미리 볼 수 있어요.</span>
+    </div>
+
+    <figure class="sample" aria-label="이름표를 넣은 양식 예시">
+      <div class="sample-paper">
+        <div class="sample-band">등대의집 구입 증빙</div>
+        <dl>
+          <div><dt>품목</dt><dd><code class="tok">{품목}</code></dd></div>
+          <div><dt>구입일</dt><dd><code class="tok">{날짜}</code></dd></div>
+          <div><dt>수량</dt><dd><code class="tok">{수량}</code></dd></div>
+          <div><dt>금액</dt><dd><code class="tok">{금액}</code>원</dd></div>
+          <div class="tall"><dt>사진</dt><dd><code class="tok photo">{사진}</code></dd></div>
+        </dl>
+      </div>
+      <figcaption>이렇게 칸마다 이름표를 적어 두면 돼요</figcaption>
+    </figure>
+
+    <label class="drop" id="drop" tabindex="0">
+      <input type="file" id="tplInput" accept=".hwpx,application/hwp+zip,application/octet-stream" hidden>
+      <span class="drop-ico" aria-hidden="true">
+        <svg viewBox="0 0 24 24" width="26" height="26" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><path d="M17 8l-5-5-5 5"/><path d="M12 3v12"/></svg>
+      </span>
+      <span class="drop-txt">
+        <strong>양식 파일(.hwpx) 등록하기</strong>
+        <small>여기로 끌어오거나 눌러서 선택하세요. 등록한 양식은 이 기기에만 저장돼요.</small>
+      </span>
+    </label>
+    <p class="tpl-error" id="tplError" role="alert" hidden></p>
+
+    <div class="found">
+      <span class="found-title">양식에서 찾은 이름표</span>
+      <div class="chips" id="chips" aria-label="양식에서 찾은 이름표"></div>
+    </div>
+    <button type="button" class="link" id="resetTpl" hidden>연습용 양식으로 되돌리기</button>
+  </section>
+
+  <!-- 2. 촬영·입력 -->
+  <section class="panel" id="s2" aria-labelledby="h2">
+    <div class="panel-head">
+      <span class="step">STEP 2</span>
+      <h2 id="h2">촬영·입력</h2>
+    </div>
+    <div id="items"></div>
+    <div class="addrow">
+      <button type="button" class="btn ghost" id="addBtn">+ 물품 추가</button>
+      <span class="count" id="count">총 1건</span>
+    </div>
+  </section>
+
+  <!-- 3. 문서 만들기 -->
+  <section class="panel" id="s3" aria-labelledby="h3">
+    <div class="panel-head">
+      <span class="step">STEP 3</span>
+      <h2 id="h3">문서 만들기</h2>
+    </div>
+    <button type="button" class="btn primary" id="makeBtn">한글 문서(HWPX) 만들기</button>
+    <button type="button" class="btn ghost share" id="shareBtn" hidden>공유하기 (카카오톡 등)</button>
+    <p class="status" id="status" role="status" aria-live="polite"></p>
+  </section>
+
+  <footer class="foot">
+    <p>사진과 양식은 기기 밖으로 전송되지 않아요. 모든 처리는 이 기기의 브라우저 안에서 이루어져요.</p>
+    <p>증빙 사진은 물품과 영수증 위주로 찍어 주세요. 이용인의 얼굴이 담기지 않도록 해 주세요.</p>
+    <p>만들어진 파일은 카카오톡 '나와의 채팅' 등으로 PC에 옮겨 한글에서 열어 주세요. 아이폰 사진이 읽히지 않으면 카메라 형식을 '높은 호환성'으로 바꿔 주세요.</p>
+  </footer>
+</main>
+
+<script src="vendor/jszip.min.js"></script>
+<script src="hwpx.js"></script>
+<script src="app.js"></script>
+</body>
+</html>
